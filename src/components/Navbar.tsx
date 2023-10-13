@@ -5,7 +5,7 @@ import { useAccount } from "wagmi";
 
 const Navbar = () => {
   const handleHomeRoute = () => {
-    router.push("/index");
+    router.push("/");
   };
   const handleRegisterRoute = () => {
     router.push("/RegisterDomain");
