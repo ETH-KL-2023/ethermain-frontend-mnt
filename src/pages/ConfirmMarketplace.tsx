@@ -1,9 +1,6 @@
 import Navbar from "@/components/Navbar";
 import { Button, Card, Divider, Input } from "@chakra-ui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { Menu, Transition } from "@headlessui/react";
 import { Fragment, JSX, SVGProps, useEffect, useRef, useState } from "react";
-import DropdownButton from "@/components/DropdownButton";
 
 function ConfirmMarketplace() {
   const [subtotalPrice, setSubtotalPrice] = useState(0.15);
