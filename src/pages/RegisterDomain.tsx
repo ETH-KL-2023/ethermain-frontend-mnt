@@ -146,6 +146,7 @@ function RegisterDomain() {
                 Buy Now
               </button>
             </div>
+            <Divider colorScheme="gray" className="my-4" />
           </Card>
         )}
       </div>
