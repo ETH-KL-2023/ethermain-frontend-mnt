@@ -95,7 +95,7 @@ function RegisterDomain() {
                 className="w-1/6 ml-64 px-3 p-2 text-md font-medium text-white text-center bg-slate-500 rounded-lg"
                 onClick={handleETHButtonClick}
               >
-                0.015 ETH
+                0.15 ETH
               </button>
             </div>
             <Divider colorScheme="gray" className="my-4 mb-32" />
@@ -127,7 +127,7 @@ function RegisterDomain() {
                 className="w-1/6 ml-64 px-3 p-2 text-md font-medium text-white text-center bg-slate-500 rounded-lg"
                 onClick={handleETHButtonClick}
               >
-                0.008 ETH
+                0.08 ETH
               </button>
             </div>
             <Divider colorScheme="gray" className="my-4" />
@@ -156,7 +156,7 @@ function RegisterDomain() {
                 className="w-1/6 ml-64 px-3 p-2 text-md font-medium text-white text-center bg-slate-500 rounded-lg"
                 onClick={handleETHButtonClick}
               >
-                0.025 ETH
+                0.25 ETH
               </button>
             </div>
             <Divider colorScheme="gray" className="my-4" />
@@ -185,7 +185,7 @@ function RegisterDomain() {
                 className="w-1/6 ml-64 px-3 p-2 text-md font-medium text-white text-center bg-slate-500 rounded-lg"
                 onClick={handleETHButtonClick}
               >
-                0.019 ETH
+                0.19 ETH
               </button>
             </div>
             <Divider colorScheme="gray" className="my-4" />
