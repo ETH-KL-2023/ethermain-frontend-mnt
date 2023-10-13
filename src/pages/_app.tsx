@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import { RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit";
 import type { AppProps } from "next/app";
 import {
+  sepolia,
   polygon,
   optimism,
   arbitrum,
@@ -22,10 +23,10 @@ import { ChakraProvider } from "@chakra-ui/react";
 export default function App({ Component, pageProps }: AppProps) {
   const { chains, publicClient } = configureChains(
 
-    [mantleTestnet, polygonMumbai, localhost],
+    [sepolia, mantleTestnet, polygonMumbai, localhost],
     [
       alchemyProvider({
-        apiKey: process.env.ALCHEMY_ID || "7tVsktJMmHlyYh2l2v6zpSYnPxvIcvhC",
+        apiKey: process.env.ALCHEMY_ID || "G2wTgadhRVq6NtbD-vV3dXf1cmctSlQm",
       }),
       publicProvider(),
     ]
