@@ -58,7 +58,7 @@ function ConfirmRegistration() {
   const intToken = Number(tokenId);
 
   const { config } = usePrepareContractWrite({
-    address: "0xB3A28F6524cf04e6efdcef41Ff200eC669aC76fd",
+    address: "0x6A9898DFe2c89A1cc5e4373a99eD59447560c946",
     abi: abii,
     functionName: "registerDNS",
     value: parseEther("0.01"),
