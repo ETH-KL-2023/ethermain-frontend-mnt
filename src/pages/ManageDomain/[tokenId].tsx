@@ -29,7 +29,49 @@ function ManageDomain() {
   };
 
   //Set DATA in DNS registry
-  
+  //GET domain name from tokenid
+  const { data:dnsData, error:error1, isLoading:loading2} = useContractRead({
+    // fetch token data
+    address: REGISTRY_CONTRACT_ADDRESS,
+    abi: abiiRegistry,
+    functionName: "registry",
+    args: [tokenId],
+  });
+//   console.log(dnsData)
+    //check dns data
+    //if empty set default value
+    //else set value from dns data
+  useEffect(() => {
+    if (Array.isArray(dnsData)){
+        // [4]  dns1,
+        if(dnsData[4]!=0){
+            setDns1(dnsData[4]);
+        }
+        // [5]  dns2,
+        if(dnsData[5]!=0){
+            setDns2(dnsData[5]);
+        }
+        // [6]  keyTag,
+        if(dnsData[6]!=0){
+            setKeyTag(dnsData[6]);
+        }
+        // [7]  selectedItemAlgo//algo
+        if(dnsData[7]!=0){
+            setSelectedItemAlgo(dnsData[7]);
+        }
+        // [8]  selectedItemDigest//digestType
+        if(dnsData[8]!=0){
+            setSelectedItemDigest(dnsData[8]);
+        }
+        // [9]  digest
+        if(dnsData[9]!=0){
+            setDigest(dnsData[9]);
+        }
+    }
+    }, [dnsData]); 
+ 
+
+
   //GET domain name from tokenid
   const { data:data1, error, isLoading:loading1 } = useContractRead({
     // fetch token data
@@ -38,7 +80,6 @@ function ManageDomain() {
     functionName: "getDNSData",
     args: [tokenId],
   });
-
 
 
   //updateDNSData dns Data from tokenid
@@ -67,8 +108,8 @@ function ManageDomain() {
       console.log("Update DNS data successful", data); 
     }
 
-    if (loading1) return <p>Loading...</p>;
-    if (error) return <p>Error fetching data for token {tokenId}</p>;
+    if (loading1||loading2) return <p>Loading...</p>;
+    if (error||error1) return <p>Error fetching data for token {tokenId}</p>;
 
   return (
     <div className="h-full bg-gradient-to-r from-blue-100 via-pink-100 to-purple-100">
