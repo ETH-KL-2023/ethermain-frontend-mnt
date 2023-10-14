@@ -9,6 +9,7 @@ import {
 } from "wagmi";
 import { REGISTRY_CONTRACT_ADDRESS } from "../../../globalvar";
 import abiiRegistry from "../../../abiiRegistry.json";
+import { getSupabase } from "@/shared/utils";
 
 function TransferDomain() {
   const router = useRouter();
@@ -45,10 +46,128 @@ function TransferDomain() {
     write,
   } = useContractWrite(config);
 
-  function handleClick() {
-    write?.();
+  ///////////////////////////////////////////////////
+  const supabase = getSupabase();
+
+  async function checkiftokenListed(tokenId: number) {
+    const { data, error } = await supabase
+      .from("tokenTable")
+      .select("*")
+      .contains("token_id", [tokenId]);
+    if (error) {
+      console.error(`tokenId of ${tokenId} is not listed or expired`, error);
+      return false;
+    }
+
+    if (data?.length === 0) {
+      console.log(`tokenId of ${tokenId} is not listed or expired`);
+      return false;
+    }
+    return true;
   }
 
+  async function addressExists(address: string): Promise<boolean> {
+    const { data, error } = await supabase
+      .from("tokenTable")
+      .select("Address")
+      .eq("Address", address);
+
+    if (error) {
+      console.error("Error checking address:", error);
+      return false;
+    }
+
+    return data && data.length > 0;
+  }
+
+  async function removeFromTokenId(tokenId: number) {
+    const { data, error } = await supabase
+      .from("tokenTable")
+      .select("*")
+      .contains("token_id", [tokenId]);
+
+    if (error) {
+      console.error(
+        `Error fetching rows with listed_id containing ${tokenId}:`,
+        error
+      );
+      return;
+    }
+
+    for (const row of data!) {
+      const updatedListedIds = row.token_id.filter(
+        (id: number) => id !== tokenId
+      );
+      const { error: updateError } = await supabase
+        .from("tokenTable")
+        .update({ token_id: updatedListedIds })
+        .eq("id", row.id);
+
+      if (updateError) {
+        console.error(`Error updating listed_id row:`, updateError);
+      }
+    }
+  }
+
+  async function processTokenForAddress(address: string, tokenId: number) {
+    const listed = await checkiftokenListed(tokenId);
+    if (!listed) {
+      return;
+    }
+
+    //listed
+    const exists = await addressExists(address);
+
+    // Remove the tokenId from any address that has it in the tokenid columns.
+    await removeFromTokenId(tokenId);
+
+    if (!exists) {
+      // Insert a new row with the address and tokenId.
+      const { error } = await supabase.from("tokenTable").insert({
+        Address: address,
+        token_id: [tokenId],
+      });
+
+      if (error) {
+        console.error("Error inserting new address:", error);
+      }
+    } else {
+      // Append the tokenId to the token_id array of the existing address.
+      const { data, error } = await supabase
+        .from("tokenTable")
+        .select("*")
+        .eq("Address", address);
+
+      if (error) {
+        console.error("Error fetching address:", error);
+        return;
+      }
+
+      const currentTokenIds = data![0].token_id || [];
+      const updatedTokenIds = Array.from(
+        new Set([...currentTokenIds, tokenId])
+      );
+
+      const { error: updateError } = await supabase
+        .from("tokenTable")
+        .update({ token_id: updatedTokenIds })
+        .eq("Address", address);
+
+      if (updateError) {
+        console.error(
+          "Error updating token_id for existing address:",
+          updateError
+        );
+      }
+    }
+  }
+
+  ////////////////////////////////////////////////////
+
+  function handleClick() {
+    write?.();
+    processTokenForAddress(String(destinationAddress), Number(currentTokenId));
+  }
 
   return (
     <div className="h-screen bg-gradient-to-r from-blue-100 via-pink-100 to-purple-100">
