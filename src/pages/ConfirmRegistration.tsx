@@ -11,6 +11,9 @@ import abiiRegistry from "../../abiiRegistry.json"
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import { REGISTRY_CONTRACT_ADDRESS } from "../../globalvar";
+import { LISTING_CONTRACT_ADDRESS } from "../../globalvar";
+
 function ConfirmRegistration() {
   const [selectedItem, setSelectedItem] = useState("Duration");
   const [price, setPrice] = useState(0);
@@ -62,7 +65,7 @@ function ConfirmRegistration() {
   const { config } = usePrepareContractWrite({
     // address: process.env.REGISTRY_CONTRACT as `0x${string}`,
 
-    address:"0x0B4CC8F447998244ce60A463d6c8786364075849",
+    address:REGISTRY_CONTRACT_ADDRESS,
 
     abi: abiiRegistry,
     functionName: "registerDNS",
