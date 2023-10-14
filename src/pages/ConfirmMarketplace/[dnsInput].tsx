@@ -19,7 +19,7 @@ function ConfirmMarketplace() {
 
   useEffect(() => {
     if (router.isReady) { // ensures dns value is available
-        setdnsName(dnsInput ? dnsInput + "123.emn" : "defaultvalue.emn"); // you can set a default value if dns is not available for any reason
+        setdnsName(dnsInput ? dnsInput + ".emn" : "defaultvalue.emn"); // you can set a default value if dns is not available for any reason
     }
 }, [router.isReady, dnsInput]);
 
@@ -197,7 +197,7 @@ function ConfirmMarketplace() {
           <div className="flex mt-2">
             <h1 className="text-lg text-left font-semibold">Listed Price:</h1>
             <text className="ml-2 text-lg text-left font-semibold">
-              0.15 ETH
+              0.015 ETH
             </text>
           </div>
           <div className="flex mt-2">

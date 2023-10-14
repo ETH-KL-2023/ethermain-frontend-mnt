@@ -152,11 +152,19 @@ function TokenData({ tokenId }: any) {
   return (
     <div>
       <div className="flex flex-row w-full my-4">
-        <div className="w-1/2 p-2 bg-transparent">
+        <div className="flex-row w-1/2 p-2 bg-transparent">
           <text className="text-lg font-semibold">
             {/* ID: {data?.tokenId?.toString()} */}
             {data?.domainName}
           </text>
+          <div className="flex-col">
+            <text className="text-sm font-semibold">
+              Expiry Date:
+            </text>
+            <text className="text-sm font-semibold">
+              {/* {expiryDate} */}
+            </text>
+          </div>
         </div>
         <div className="w-1/2 p-2 bg-transparent ml-64">
           <span>
@@ -365,7 +373,7 @@ function ListedData({ tokenId }: any) {
             >
               Delist
             </button>
-            
+
             {data2 ? (
               <ReListModal _tokenId={Number(data2[0])} _domainName={data2[2]} />
             ) : (
