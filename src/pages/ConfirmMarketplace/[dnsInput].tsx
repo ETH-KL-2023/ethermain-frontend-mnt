@@ -96,7 +96,7 @@ function ConfirmMarketplace() {
 
     if (!exists) {
       // Insert a new row with the address and tokenId.
-      const { error } = await supabase.from("tokenTable_duplicate").insert({
+      const { error } = await supabase.from("tokenTable").insert({
         Address: address,
         token_id: [tokenId],
       });
