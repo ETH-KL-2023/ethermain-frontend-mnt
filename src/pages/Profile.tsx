@@ -174,8 +174,8 @@ function TokenData({ tokenId }: any) {
   );
 }
 
-function ListModal({_tokenId,_domainName,}: {_tokenId: any; _domainName: string;}) {
-
+function ListModal({_tokenId,_domainName,}: {_tokenId: any; _domainName: string;})
+ {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [price, setPrice] = useState<string>("");
@@ -194,7 +194,7 @@ function ListModal({_tokenId,_domainName,}: {_tokenId: any; _domainName: string;
   function handleListingFunction() {
     write?.();
     moveTokenToListed(Number(_tokenId));
-    console.log("tokenId",_tokenId);
+    console.log("tokenId", _tokenId);
     console.log("manual log", data);
   }
 
@@ -281,10 +281,6 @@ async function moveTokenToListed(tokenId: number) {
   }
 }
 
-
-
-
-
 ////////////////////////////////////////////////////////////////// LISTED LISTING
 function ListedData({ tokenId }: any) {
   // fetch listed data
@@ -298,12 +294,11 @@ function ListedData({ tokenId }: any) {
     functionName: "getListingData",
     args: [tokenId],
     onError(error) {
-      console.log('Error', error)
+      console.log("Error", error);
     },
     onSuccess(data) {
-      console.log('Success', data)
+      console.log("Success", data);
     },
-
   });
   // if (isLoading) return <p>Loading...</p>;
   // if (error) return <p>Error fetching data for token {tokenId}</p>;
@@ -317,37 +312,54 @@ function ListedData({ tokenId }: any) {
       console.log("Success", data);
     },
   });
-  const { data:data3, isLoading:isLoading3, isSuccess, write } = useContractWrite(config);
+  const {
+    data: data3,
+    isLoading: isLoading3,
+    isSuccess,
+    write,
+  } = useContractWrite(config);
 
-  function handleDeList(){
+  function handleDeList() {
     write?.();
     moveTokenToTokenId(Number(tokenId));
-    console.log("tokenId",tokenId);
+    console.log("tokenId", tokenId);
     console.log("manual log", data3);
-
   }
 
   return (
     <div>
       <div className="flex flex-row w-full my-4">
         <div className="w-1/2 p-2 bg-transparent">
-          <text className="text-lg font-semibold">
-            {/* ID: {data?.tokenId?.toString()} */}
-            {data2[2]}
-          </text>
-          <span className="m-[30px]"></span>
-          <text className="text-lg font-semibold">
-            {Number(data2[1])/(10**18) + " eth"}
-          </text>
+          {data2 && (data2 as any[]).length > 0 ? ( //make sure data ga bole empty, kalo empty di kasi wait
+            <>
+              <text className="text-lg font-semibold">{data2[2]}</text>
+              <span className="m-[30px]"></span>
+              <text className="text-lg font-semibold">
+                {Number(data2[1]) / 10 ** 18 + " eth"}
+              </text>
+            </>
+          ) : (
+            <text className="text-lg font-semibold">wait</text>
+          )}
         </div>
+
         <div className="w-1/2 p-2 bg-transparent ml-64">
           <span>
-            <button onClick={handleDeList} className="w-1/3 p-2 mr-4 bg-slate-400 rounded-lg border-2 text-white font-semibold">
+            <button
+              onClick={handleDeList}
+              className="w-1/3 p-2 mr-4 bg-slate-400 rounded-lg border-2 text-white font-semibold"
+            >
               Delist
             </button>
-            <button className="w-1/3 p-2 bg-slate-400 rounded-lg border-2 text-white font-semibold">
+            {/* <button className="w-1/3 p-2 bg-slate-400 rounded-lg border-2 text-white font-semibold">
               Relist
-            </button>
+            </button> */}
+           
+
+            <ReListModal
+              _tokenId={Number(data2[0])}
+              _domainName={data2[2]}
+            />
           </span>
         </div>
       </div>
@@ -399,4 +411,70 @@ async function moveTokenToTokenId(tokenId: number) {
       console.error("Error updating row:", updateError);
     }
   }
+}
+
+function ReListModal({
+  _tokenId,
+  _domainName,
+}: {
+  _tokenId: any;
+  _domainName: string;
+}) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const [price, setPrice] = useState<string>("");
+
+  const { config } = usePrepareContractWrite({
+    address: LISTING_CONTRACT_ADDRESS,
+    abi: abiiListing,
+    functionName: "relist",
+    args: [_tokenId, parseEther(price)],
+    onSuccess(data) {
+      console.log("Success", data);
+    },
+  });
+  const { data, isLoading, isSuccess, write } = useContractWrite(config);
+
+  function handleListingFunction() {
+    write?.();
+    moveTokenToListed(Number(_tokenId));
+    console.log("tokenId", _tokenId);
+    console.log("manual log", data);
+  }
+
+  return (
+    <>
+      <button
+        onClick={onOpen}
+        className="w-1/3 p-2 mr-4 bg-slate-400 rounded-lg border-2 text-white font-semibold"
+      >
+        ReList
+      </button>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>{_domainName}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody className=" font-bold text-lg">Relist Price</ModalBody>
+
+          <input
+            type="text"
+            className="p-3 ml-7 border border-solid h-[40px] w-[200px]"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+          />
+
+          <ModalFooter className=" gap-6">
+            <Button onClick={handleListingFunction} variant="ghost">
+              LIST
+            </Button>
+            <Button colorScheme="blue" mr={3} onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
 }
