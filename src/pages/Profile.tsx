@@ -174,7 +174,7 @@ function TokenData({ tokenId }: any) {
   );
 }
 
-function ListModal({_tokenId,_domainName,}: {_tokenId: string; _domainName: string;}) {
+function ListModal({_tokenId,_domainName,}: {_tokenId: any; _domainName: string;}) {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -193,6 +193,8 @@ function ListModal({_tokenId,_domainName,}: {_tokenId: string; _domainName: stri
 
   function handleListingFunction() {
     write?.();
+    moveTokenToListed(Number(_tokenId));
+    console.log("tokenId",_tokenId);
     console.log("manual log", data);
   }
 
@@ -233,11 +235,54 @@ function ListModal({_tokenId,_domainName,}: {_tokenId: string; _domainName: stri
   );
 }
 
+const supabase = getSupabase();
+async function moveTokenToListed(tokenId: number) {
+  // Step 1: Find rows that have the token id in the token_id array
+  const { data, error } = await supabase
+    .from("tokenTable")
+    .select("*")
+    .contains("token_id", [tokenId]);
+
+  if (error) {
+    console.error("Error fetching rows:", error);
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    console.log(`No rows found with token id ${tokenId}`);
+    return;
+  }
+
+  // Step 2: For each row found, update the arrays
+  for (const row of data) {
+    // Remove the token id from the token_id array
+    const updatedTokenIds = row.token_id.filter((id: any) => id !== tokenId);
+
+    // Check if listed_id exists, if not default to an empty array
+    const currentListedIds = row.listed_id || [];
+
+    // Add the token id to the listed_id array (if it's not already there)
+    const updatedListedIds = currentListedIds.includes(tokenId)
+      ? currentListedIds
+      : [...currentListedIds, tokenId];
+
+    // Update the row in the database
+    const { error: updateError } = await supabase
+      .from("tokenTable")
+      .update({
+        token_id: updatedTokenIds,
+        listed_id: updatedListedIds,
+      })
+      .eq("id", row.id);
+
+    if (updateError) {
+      console.error("Error updating row:", updateError);
+    }
+  }
+}
 
 
 
-
-////////////////////////////////////////////////////////////////// ACTIVE LISTING
 
 
 ////////////////////////////////////////////////////////////////// LISTED LISTING
@@ -248,14 +293,39 @@ function ListedData({ tokenId }: any) {
     error,
     isLoading,
   } = useContractRead({
-    address: REGISTRY_CONTRACT_ADDRESS,
-    abi: abiiRegistry,
-    functionName: "getDNSData",
+    address: LISTING_CONTRACT_ADDRESS,
+    abi: abiiListing,
+    functionName: "getListingData",
     args: [tokenId],
-  });
+    onError(error) {
+      console.log('Error', error)
+    },
+    onSuccess(data) {
+      console.log('Success', data)
+    },
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error fetching data for token {tokenId}</p>;
+  });
+  // if (isLoading) return <p>Loading...</p>;
+  // if (error) return <p>Error fetching data for token {tokenId}</p>;
+
+  const { config } = usePrepareContractWrite({
+    address: LISTING_CONTRACT_ADDRESS,
+    abi: abiiListing,
+    functionName: "delist",
+    args: [tokenId],
+    onSuccess(data) {
+      console.log("Success", data);
+    },
+  });
+  const { data:data3, isLoading:isLoading3, isSuccess, write } = useContractWrite(config);
+
+  function handleDeList(){
+    write?.();
+    moveTokenToTokenId(Number(tokenId));
+    console.log("tokenId",tokenId);
+    console.log("manual log", data3);
+
+  }
 
   return (
     <div>
@@ -263,12 +333,16 @@ function ListedData({ tokenId }: any) {
         <div className="w-1/2 p-2 bg-transparent">
           <text className="text-lg font-semibold">
             {/* ID: {data?.tokenId?.toString()} */}
-            {data2?.domainName}
+            {data2[2]}
+          </text>
+          <span className="m-[30px]"></span>
+          <text className="text-lg font-semibold">
+            {Number(data2[1])/(10**18) + " eth"}
           </text>
         </div>
         <div className="w-1/2 p-2 bg-transparent ml-64">
           <span>
-            <button className="w-1/3 p-2 mr-4 bg-slate-400 rounded-lg border-2 text-white font-semibold">
+            <button onClick={handleDeList} className="w-1/3 p-2 mr-4 bg-slate-400 rounded-lg border-2 text-white font-semibold">
               Delist
             </button>
             <button className="w-1/3 p-2 bg-slate-400 rounded-lg border-2 text-white font-semibold">
@@ -281,4 +355,48 @@ function ListedData({ tokenId }: any) {
     </div>
   );
 }
-////////////////////////////////////////////////////////////////// LISTED LISTING
+
+async function moveTokenToTokenId(tokenId: number) {
+  // Step 1: Find rows that have the token id in the listed_id array
+  const { data, error } = await supabase
+    .from("tokenTable")
+    .select("*")
+    .contains("listed_id", [tokenId]);
+
+  if (error) {
+    console.error("Error fetching rows:", error);
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    console.log(`No rows found with token id ${tokenId} in listed_id`);
+    return;
+  }
+
+  // Step 2: For each row found, update the arrays
+  for (const row of data) {
+    // Remove the token id from the listed_id array
+    const updatedListedIds = row.listed_id.filter((id: any) => id !== tokenId);
+
+    // Check if token_id exists, if not default to an empty array
+    const currentTokenIds = row.token_id || [];
+
+    // Add the token id to the token_id array (if it's not already there)
+    const updatedTokenIds = currentTokenIds.includes(tokenId)
+      ? currentTokenIds
+      : [...currentTokenIds, tokenId];
+
+    // Update the row in the database
+    const { error: updateError } = await supabase
+      .from("tokenTable")
+      .update({
+        token_id: updatedTokenIds,
+        listed_id: updatedListedIds,
+      })
+      .eq("id", row.id);
+
+    if (updateError) {
+      console.error("Error updating row:", updateError);
+    }
+  }
+}
