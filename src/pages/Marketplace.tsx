@@ -90,7 +90,7 @@ function RegisterDomain() {
             </h1>
             <div className="flex mt-8">
               <h1 className="ml-4 text-lg text-left font-semibold mr-4 mt-1">
-              {searchValue.replace("cool", "smart") + ".emn"}
+              {searchValue.replace("123", "smart") + ".emn"}
               </h1>
               <div className="relative inline-block mr-20">
                 <button
@@ -102,7 +102,7 @@ function RegisterDomain() {
                 {showOwner2 && (
                   <div className="absolute z-10 top-0 left-0 -mt-44 -ml-16">
                     <OwnerCard
-                      domainName={searchValue.replace("cool", "smart") + ".emn"}
+                      domainName={searchValue.replace("123", "smart") + ".emn"}
                       ownerAddress="0xu0dfyt78shwkl"
                       expiryDate="07/05/2025"
                     />
@@ -118,7 +118,7 @@ function RegisterDomain() {
             <Divider colorScheme="gray" className="my-4" />
             <div className="flex">
               <h1 className="ml-4 text-lg text-left font-semibold mr-3 mt-1">
-              {"0x" + searchValue.replace("cool", "") + ".emn"}
+              {"0x" + searchValue.replace("123", "") + ".emn"}
               </h1>
               <div className="relative inline-block mr-28">
                 <button
@@ -130,7 +130,7 @@ function RegisterDomain() {
                 {showOwner3 && (
                   <div className="absolute z-10 top-0 left-0 -mt-44 -ml-16">
                     <OwnerCard
-                      domainName={"0x" + searchValue.replace("cool", "") + ".emn"}
+                      domainName={"0x" + searchValue.replace("123", "") + ".emn"}
                       ownerAddress="0xui892hfalwhdoq0"
                       expiryDate="28/07/2025"
                     />
@@ -146,7 +146,7 @@ function RegisterDomain() {
             <Divider colorScheme="gray" className="my-4" />
             <div className="flex">
               <h1 className="ml-4 text-lg text-left font-semibold mr-5 mt-1">
-              {searchValue.replace("cool", "xyz") + ".emn"}
+              {searchValue.replace("123", "xyz") + ".emn"}
               </h1>
               <div className="relative inline-block mr-24">
                 <button
@@ -158,7 +158,7 @@ function RegisterDomain() {
                 {showOwner4 && (
                   <div className="absolute z-10 top-0 left-0 -mt-44 -ml-16">
                     <OwnerCard
-                      domainName={searchValue.replace("cool", "xyz") + ".emn"}
+                      domainName={searchValue.replace("123", "xyz") + ".emn"}
                       ownerAddress="0xu769ghgk89hpp"
                       expiryDate="19/10/2024"
                     />
