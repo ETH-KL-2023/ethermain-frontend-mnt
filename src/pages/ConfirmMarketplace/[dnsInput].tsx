@@ -176,7 +176,7 @@ function ConfirmMarketplace() {
     write?.();
   }
 
-  const [subtotalPrice, setSubtotalPrice] = useState(0.15);
+  const [subtotalPrice, setSubtotalPrice] = useState(0.015);
 
   return (
     <div className="h-screen bg-gradient-to-r from-blue-100 via-pink-100 to-purple-100">
