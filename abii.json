@@ -1,0 +1,520 @@
+[
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_domainName",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "expiryPrice",
+				"type": "uint256"
+			}
+		],
+		"name": "registerDNS",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_tokenId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_newNameserver1",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_newNameserver2",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_newKeytag",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_newAlgorithm",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_newDigestType",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_newDigest",
+				"type": "string"
+			}
+		],
+		"name": "updateDNSData",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_tokenId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "newExpiryDate",
+				"type": "uint256"
+			}
+		],
+		"name": "updateExpiryDate",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_tokenId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "newOwnerAddress",
+				"type": "address"
+			}
+		],
+		"name": "updateOwner",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_domainName",
+				"type": "string"
+			}
+		],
+		"name": "checkActiveDomainName",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_tokenId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_domainName",
+				"type": "string"
+			}
+		],
+		"name": "checkDomainNameListExpiry",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "domainNameList",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "domainName",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "expiryDate",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getBalance",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getCurrentTime",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "getDNSData",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "domainName",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "ownerAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "expiryDate",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "nameserver1",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "nameserver2",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "keytag",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "algorithm",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "digestType",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "digest",
+						"type": "string"
+					}
+				],
+				"internalType": "struct Registry.DNSData",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "getDomainName",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "domainName",
+				"type": "string"
+			}
+		],
+		"name": "getDomainsByDomainName",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "domainName",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "expiryDate",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct Registry.DomainData[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "getOwnerAddressByTokenId",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "isExpiredDomainName",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "registry",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "domainName",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "ownerAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "expiryDate",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "nameserver1",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "nameserver2",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "keytag",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "algorithm",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "digestType",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "digest",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "registryLength",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "showDNSdata",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "domainName",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "ownerAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "expiryDate",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "nameserver1",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "nameserver2",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "keytag",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "algorithm",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "digestType",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "digest",
+						"type": "string"
+					}
+				],
+				"internalType": "struct Registry.DNSData",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
