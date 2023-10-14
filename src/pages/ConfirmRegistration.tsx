@@ -7,7 +7,7 @@ import DropdownButton from "@/components/DropdownButton";
 import { getSupabase } from "@/shared/utils";
 import { useAccount, useContractWrite, usePrepareContractWrite } from "wagmi";
 import { parseEther } from "viem";
-import abii from "../../abii.json";
+import abiiRegistry from "../../abiiRegistry.json"
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -53,15 +53,18 @@ function ConfirmRegistration() {
   //////////////////////////////////////////////////////////////////////////////////////////
   const { address, isConnecting, isDisconnected } = useAccount();
 
-  const [dnsName, setdnsName] = useState<string>("try10.emn"); // INPUT HARD CODE DI SINI
+  const [dnsName, setdnsName] = useState<string>("try2.ethermain"); // INPUT HARD CODE DI SINI
   const [time, setTime] = useState<string>("1"); // INPUT HARD CODE DI SINI
 
   const [tokenId, setTokenId] = useState<any>(null);
   const intToken = Number(tokenId);
 
   const { config } = usePrepareContractWrite({
-    address: "0x6A9898DFe2c89A1cc5e4373a99eD59447560c946",
-    abi: abii,
+    // address: process.env.REGISTRY_CONTRACT as `0x${string}`,
+
+    address:"0x0B4CC8F447998244ce60A463d6c8786364075849",
+
+    abi: abiiRegistry,
     functionName: "registerDNS",
     value: parseEther("0.01"),
     args: [dnsName, time],
