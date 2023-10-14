@@ -3,6 +3,7 @@ import abii from "../../abii.json";
 import { getSupabase } from "@/shared/utils";
 import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
+import { Card, Divider } from "@chakra-ui/react";
 
 export default function Profile() {
   const { address, isConnecting, isDisconnected } = useAccount();
@@ -81,28 +82,29 @@ export default function Profile() {
   // })
 
   return (
-    <div>
-      <Navbar></Navbar>
-      <button onClick={handleClick}>View my token</button>
+    <div className="h-screen bg-gradient-to-r from-blue-100 via-pink-100 to-purple-100">
+      <Navbar />
+      <div className="container mt-8 w-8/12 mx-auto">
+        <button
+          className="w-1/3 p-2 bg-slate-400 rounded-lg text-white font-semibold"
+          onClick={handleClick}
+        >
+          View my token
+        </button>
 
-      <br />
-      <br />
+        <h1 className="mt-8 text-2xl font-semibold">Active Domains</h1>
+        <Card className="mt-2 p-4 mx-auto justify-center">
+          {tokenIds.map((id) => (
+            <TokenData key={id} tokenId={id} />
+          ))}
+        </Card>
 
-      <div className="h-[300px] w-[700px] bg-amber-300 rounded-xl">
-        <h1>Active Domain</h1>
-        {tokenIds.map((id) => (
-          <TokenData key={id} tokenId={id} />
-        ))}
-      </div>
-
-      <br />
-      <br />
-
-      <div className="h-[300px] w-[700px] bg-amber-300 rounded-xl">
-        <h1>listed</h1>
-        {listedIds.map((list) => (
-          <ListedData key={list} tokenId={list} />
-        ))}
+        <h1 className="mt-8 text-2xl font-semibold">Listed</h1>
+        <Card className="mt-2 p-4 mx-auto justify-center">
+          {listedIds.map((list) => (
+            <ListedData key={list} tokenId={list} />
+          ))}
+        </Card>
       </div>
     </div>
   );
@@ -121,15 +123,26 @@ function TokenData({ tokenId }: any) {
   if (error) return <p>Error fetching data for token {tokenId}</p>;
 
   return (
-    <div className="h-[50px] w-[400px] bg-red-600 rounded-xl my-[20px]">
-      <p>
-        ID: {data?.tokenId?.toString()}
-        <span className="m-[20px]">Name: {data?.domainName}</span>
-      </p>
-      <span>
-        <button>asdasd</button>
-        <button>asdas</button>
-      </span>
+    <div>
+      <div className="flex flex-row w-full my-4">
+        <div className="w-1/2 p-2 bg-transparent">
+          <text className="text-lg font-semibold">
+            {/* ID: {data?.tokenId?.toString()} */}
+            {data?.domainName}
+          </text>
+        </div>
+        <div className="w-1/2 p-2 bg-transparent ml-64">
+          <span>
+            <button className="w-1/3 p-2 mr-4 bg-slate-400 rounded-lg border-2 text-white font-semibold">
+              List
+            </button>
+            <button className="w-1/3 p-2 bg-slate-400 rounded-lg border-2 text-white font-semibold">
+              Settings
+            </button>
+          </span>
+        </div>
+      </div>
+      <Divider colorScheme="gray" className="my-2" />
     </div>
   );
 }
@@ -151,15 +164,26 @@ function ListedData({ tokenId }: any) {
   if (error) return <p>Error fetching data for token {tokenId}</p>;
 
   return (
-    <div className="h-[50px] w-[400px] bg-red-600 rounded-xl my-[20px]">
-      <p>
-        ID: {data2?.tokenId?.toString()}
-        <span className="m-[20px]">Name: {data2?.domainName}</span>
-      </p>
-      <span>
-        <button>asdasd</button>
-        <button>asddas</button>
-      </span>
+    <div>
+      <div className="flex flex-row w-full my-4">
+        <div className="w-1/2 p-2 bg-transparent">
+          <text className="text-lg font-semibold">
+            {/* ID: {data?.tokenId?.toString()} */}
+            {data2?.domainName}
+          </text>
+        </div>
+        <div className="w-1/2 p-2 bg-transparent ml-64">
+          <span>
+            <button className="w-1/3 p-2 mr-4 bg-slate-400 rounded-lg border-2 text-white font-semibold">
+              Delist
+            </button>
+            <button className="w-1/3 p-2 bg-slate-400 rounded-lg border-2 text-white font-semibold">
+              Relist
+            </button>
+          </span>
+        </div>
+      </div>
+      <Divider colorScheme="gray" className="my-2" />
     </div>
   );
 }

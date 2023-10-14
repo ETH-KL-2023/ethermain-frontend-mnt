@@ -20,7 +20,7 @@ function TransferDomain () {
               New Address:
             </h1>
             <Input
-              className="text-sm font-medium text-center"
+              className="text-sm font-medium text-right"
               htmlSize={50}
               width="auto"
               variant="outline"

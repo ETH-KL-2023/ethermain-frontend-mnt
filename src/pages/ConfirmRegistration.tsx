@@ -8,6 +8,8 @@ import { getSupabase } from "@/shared/utils";
 import { useAccount, useContractWrite, usePrepareContractWrite } from "wagmi";
 import { parseEther } from "viem";
 import abii from "../../abii.json";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ConfirmRegistration() {
   const [selectedItem, setSelectedItem] = useState("Duration");
@@ -51,7 +53,7 @@ function ConfirmRegistration() {
   //////////////////////////////////////////////////////////////////////////////////////////
   const { address, isConnecting, isDisconnected } = useAccount();
 
-  const [dnsName, setdnsName] = useState<string>("try5"); // INPUT HARD CODE DI SINI
+  const [dnsName, setdnsName] = useState<string>("try10.emn"); // INPUT HARD CODE DI SINI
   const [time, setTime] = useState<string>("1"); // INPUT HARD CODE DI SINI
 
   const [tokenId, setTokenId] = useState<any>(null);
@@ -63,6 +65,11 @@ function ConfirmRegistration() {
     functionName: "registerDNS",
     value: parseEther("0.01"),
     args: [dnsName, time],
+    onError(error) {
+      toast.error("Error: Domain is already taken", {
+        position: toast.POSITION.BOTTOM_CENTER,
+      });
+    },
     onSuccess(data) {
       console.log("Success", data);
       if (data && data.result) {
@@ -70,6 +77,7 @@ function ConfirmRegistration() {
       }
     },
   });
+
   const { data, isLoading, isSuccess, write } = useContractWrite(config);
 
   function handleClick() {
@@ -81,6 +89,7 @@ function ConfirmRegistration() {
   return (
     <div className="h-screen bg-gradient-to-r from-blue-100 via-pink-100 to-purple-100">
       <Navbar />
+      <ToastContainer />
       <div className="mt-8 w-1/2 mx-auto items-center justify-center">
         <h1 className="text-4xl font-semibold">Confirm Registration</h1>
         <Card className="mt-8 p-8 mx-auto justify-center">
@@ -155,12 +164,12 @@ function ConfirmRegistration() {
             />
           </div> */}
 
-          <div className="flex justify-center mt-6">
-            {/* <Button colorScheme="blackAlpha" variant="solid" className="w-1/2"
-            onClick={handleClick}>
-              Register Domain
-            </Button> */}
-            <button onClick={handleClick} disabled={isLoading}>
+          <div className="flex justify-center mt-10">
+            <button
+              className="w-1/2 p-2 bg-slate-400 rounded-lg text-white font-semibold"
+              onClick={handleClick}
+              disabled={isLoading}
+            >
               {isLoading ? "🔄" : isSuccess ? "Success!" : "Submit"}
             </button>
           </div>
