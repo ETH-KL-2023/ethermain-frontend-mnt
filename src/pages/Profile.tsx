@@ -23,6 +23,7 @@ import {
 } from "../../globalvar";
 import abiiRegistry from "../../abiiRegistry.json";
 import abiiListing from "../../abiiListing.json";
+import { useRouter } from "next/router";
 
 export default function Profile() {
   const { address, isConnecting, isDisconnected } = useAccount();
@@ -132,6 +133,7 @@ export default function Profile() {
 
 ////////////////////////////////////////////////////////////////// ACTIVE LISTING
 function TokenData({ tokenId }: any) {
+  const router = useRouter();
   const { data, error, isLoading } = useContractRead({
     // fetch token data
     address: REGISTRY_CONTRACT_ADDRESS,
@@ -142,6 +144,10 @@ function TokenData({ tokenId }: any) {
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error fetching data for token {tokenId}</p>;
+
+  const goToSettings = () => {
+    router.push(`/ManageDomain/${tokenId}`);
+  }
 
   return (
     <div>
@@ -163,7 +169,7 @@ function TokenData({ tokenId }: any) {
               _domainName={data?.domainName}
             />
 
-            <button className="w-1/3 p-2 bg-slate-400 rounded-lg border-2 text-white font-semibold">
+            <button className="w-1/3 p-2 bg-slate-400 rounded-lg border-2 text-white font-semibold" onClick={goToSettings}>
               Settings
             </button>
           </span>
