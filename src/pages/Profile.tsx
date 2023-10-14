@@ -157,14 +157,6 @@ function TokenData({ tokenId }: any) {
             {/* ID: {data?.tokenId?.toString()} */}
             {data?.domainName}
           </text>
-          <div className="flex-col">
-            <text className="text-sm font-semibold">
-              Expiry Date:
-            </text>
-            <text className="text-sm font-semibold">
-              {/* {expiryDate} */}
-            </text>
-          </div>
         </div>
         <div className="w-1/2 p-2 bg-transparent ml-64">
           <span>
