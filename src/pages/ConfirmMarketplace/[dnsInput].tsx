@@ -172,7 +172,7 @@ function ConfirmMarketplace() {
 
 
   function handleClick() {
-    processTokenForAddress(String(address), Number(1)); //HARD CODEEEEEEE
+    processTokenForAddress(String(address), Number(tokenId)); //HARD CODEEEEEEE
     write?.();
   }
 
