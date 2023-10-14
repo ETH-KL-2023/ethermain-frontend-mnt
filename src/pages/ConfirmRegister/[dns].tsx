@@ -20,6 +20,14 @@ function ConfirmRegistration () {
   const [price, setPrice] = useState(0);
   const [registrarPrice, setRegistrarPrice] = useState(0.005);
   const [subtotalPrice, setSubtotalPrice] = useState(0.005);
+  const [expiryDate, setExpiryDate] = useState('dd/mm/yy'); 
+
+  const formatDate = (date: Date) => {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
 
   const router = useRouter();
   const { dns } = router.query;
@@ -39,24 +47,46 @@ function ConfirmRegistration () {
 
   const handleDurationChange = (newDuration: any) => {
     setSelectedItem(newDuration);
+    const currentDate = new Date();
 
     // Update the price based on the selected duration
     switch (newDuration) {
       case "30 day":
         setPrice(0.01);
         setTime("1");
+        setSubtotalPrice(0.015);
+
+        const expiryDate30 = new Date(currentDate);
+        expiryDate30.setDate(currentDate.getDate() + 30); // Adding 30 days
+        setExpiryDate(formatDate(expiryDate30)); // Format as DD/MM/YYYY
         break;
+
       case "90 day":
         setPrice(0.025);
         setTime("2");
+        setSubtotalPrice(0.03);
+
+        const expiryDate90 = new Date(currentDate);
+        expiryDate90.setDate(currentDate.getDate() + 90); // Adding 90 days
+        setExpiryDate(formatDate(expiryDate90)); // Format as DD/MM/YYYY
         break;
       case "365 day":
         setPrice(0.05);
         setTime("3");
+        setSubtotalPrice(0.055);
+
+        const expiryDate365 = new Date(currentDate);
+        expiryDate365.setDate(currentDate.getDate() + 365); // Adding 90 days
+        setExpiryDate(formatDate(expiryDate365)); // Format as DD/MM/YYYY
         break;
       case "730 day":
         setPrice(0.1);
         setTime("4");
+        setSubtotalPrice(0.105);
+
+        const expiryDate730 = new Date(currentDate);
+        expiryDate730.setDate(currentDate.getDate() + 730); // Adding 90 days
+        setExpiryDate(formatDate(expiryDate730)); // Format as DD/MM/YYYY
         break;
       default:
         setPrice(0); // Set a default price
@@ -84,12 +114,10 @@ function ConfirmRegistration () {
 
     abi: abiiRegistry,
     functionName: "registerDNS",
-    value: parseEther(price.toString()),
+    value: parseEther(subtotalPrice.toString()),
     args: [dnsName, time],
     onError(error) {
-      toast.error("Error: Domain is already taken", {
-        position: toast.POSITION.BOTTOM_CENTER,
-      });
+      console.log("Error:", error)
     },
     onSuccess(data) {
       console.log("Success", data);
@@ -124,7 +152,7 @@ function ConfirmRegistration () {
               Set Duration:
             </h1>
             <DropdownButton
-              values={["30 day", "90 day", "365 day", "720 day"]}
+              values={["30 day", "90 day", "365 day", "730 day"]}
               defaultValue={selectedItem}
               onDurationChange={handleDurationChange}
             />
@@ -145,7 +173,7 @@ function ConfirmRegistration () {
           </div>
           <Divider colorScheme="gray" className="my-4" />
 
-          {/* <div className="flex mt-2">
+          <div className="flex mt-2">
             <h1 className="mt-2 text-lg text-left font-semibold">
               Registrar Fee:
             </h1>
@@ -157,8 +185,8 @@ function ConfirmRegistration () {
               value={`${registrarPrice} ETH`}
               readOnly
             />
-          </div> */}
-          {/* <div className="flex mt-4">
+          </div>
+          <div className="flex mt-4">
             <h1 className="mt-2 text-lg text-left font-semibold">
               Domain Expiry:
             </h1>
@@ -167,11 +195,11 @@ function ConfirmRegistration () {
               htmlSize={9}
               width="auto"
               variant="filled"
-              value="dd/mm/yy"
+              value={expiryDate}
               readOnly
             />
-          </div> */}
-          {/* <Divider colorScheme="gray" className="my-4" />
+          </div>
+          <Divider colorScheme="gray" className="my-4" />
           <div className="flex mt-2 mb-8">
             <h1 className="ml-96 mt-2 text-lg text-left font-semibold">
               Subtotal:
@@ -184,7 +212,7 @@ function ConfirmRegistration () {
               value={`${subtotalPrice} ETH`}
               readOnly
             />
-          </div> */}
+          </div>
 
           <div className="flex justify-center mt-10">
             <button

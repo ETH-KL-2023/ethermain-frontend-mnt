@@ -1,4 +1,4 @@
-export const REGISTRY_CONTRACT_ADDRESS: `0x${string}` | undefined = "0x75B3809e141a77322C90253E6da88A162A8A62D7";
-export const LISTING_CONTRACT_ADDRESS: `0x${string}` | undefined = "0xbef1dFb54699e60fCcEcf0F8De98aeE94B9D2B7a";
+export const REGISTRY_CONTRACT_ADDRESS: `0x${string}` | undefined = "0x0fD4Efe3C7C3285cFA81d2BD4a934eF2aFCf2CfA";
+export const LISTING_CONTRACT_ADDRESS: `0x${string}` | undefined = "0x688b53b79aE57F3BAC1b1a5e4dc9401FF89f341F";
 
 export const current_Network: string = "eth"; //mnt(mantle) or eth(taiko)_

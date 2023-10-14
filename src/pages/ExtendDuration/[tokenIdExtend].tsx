@@ -6,6 +6,11 @@ import { Fragment, JSX, SVGProps, useEffect, useRef, useState } from "react";
 import DropdownButton from "@/components/DropdownButton";
 import { useRouter } from "next/router";
 
+import { parseEther } from "viem";
+import { useContractWrite, useContractRead, usePrepareContractWrite } from "wagmi";
+import { REGISTRY_CONTRACT_ADDRESS } from "../../../globalvar";
+import abiiRegistry from "../../../abiiRegistry.json";
+
 function ExtendDuration () {
   const router = useRouter();
   const { tokenIdExtend } = router.query;
@@ -14,6 +19,16 @@ function ExtendDuration () {
   const [price, setPrice] = useState(0);
   const [registrarPrice, setRegistrarPrice] = useState(0.005);
   const [subtotalPrice, setSubtotalPrice] = useState(0.005);
+  const [time, setTime] = useState<string>("1"); // INPUT HARD CODE DI SINI
+  const [expiryDate, setExpiryDate] = useState('dd/mm/yy'); 
+
+  const formatDate = (date: Date) => {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
 
   useEffect(() => {
     const TotalPrice = price + registrarPrice;
@@ -22,22 +37,79 @@ function ExtendDuration () {
     setSubtotalPrice(parseFloat(formattedTotalPrice));
   }, [price, registrarPrice]);
 
+  //GET domain name from tokenid
+  const { data:dataDomainName, error, isLoading:loading1 } = useContractRead({
+    // fetch token data
+    address: REGISTRY_CONTRACT_ADDRESS,
+    abi: abiiRegistry,
+    functionName: "getDNSData",
+    args: [tokenIdExtend],
+  });
+
+  //Update duration of the domain name
+  const { config } = usePrepareContractWrite({
+    address:REGISTRY_CONTRACT_ADDRESS,
+    abi: abiiRegistry,
+    functionName: "updateExpiryDate",
+    value: parseEther(subtotalPrice.toString()),
+    args: [tokenIdExtend, time],
+    onError(error) {
+      console.log("Error", error)
+    },
+    onSuccess(data) {
+      console.log("Success", data);
+    },
+  });
+
+  const { data, isLoading, isSuccess, write } = useContractWrite(config);
+
+  function handleClick() {
+    console.log(data)
+    write?.();
+  }
+
   const handleDurationChange = (newDuration: any) => {
     setSelectedItem(newDuration);
-
+    const currentDate = new Date();
+    
     // Update the price based on the selected duration
     switch (newDuration) {
       case "30 day":
         setPrice(0.01);
+        setTime("1");
+        setSubtotalPrice(0.015);
+
+        const expiryDate30 = new Date(currentDate);
+        expiryDate30.setDate(currentDate.getDate() + 30); // Adding 30 days
+        setExpiryDate(formatDate(expiryDate30)); // Format as DD/MM/YYYY
         break;
+
       case "90 day":
         setPrice(0.025);
+        setTime("2");
+        setSubtotalPrice(0.03);
+
+        const expiryDate90 = new Date(currentDate);
+        expiryDate90.setDate(currentDate.getDate() + 90); // Adding 90 days
+        setExpiryDate(formatDate(expiryDate90)); // Format as DD/MM/YYYY
         break;
       case "365 day":
         setPrice(0.05);
+        setTime("3");
+        setSubtotalPrice(0.055);
+
+        const expiryDate365 = new Date(currentDate);
+        expiryDate365.setDate(currentDate.getDate() + 365); // Adding 90 days
+        setExpiryDate(formatDate(expiryDate365)); // Format as DD/MM/YYYY
         break;
       case "730 day":
         setPrice(0.1);
+        setTime("4");
+        setSubtotalPrice(0.105);
+
+        const expiryDate730 = new Date(currentDate);
+        expiryDate730.setDate(currentDate.getDate() + 730); // Adding 90 days
+        setExpiryDate(formatDate(expiryDate730)); // Format as DD/MM/YYYY
         break;
       default:
         setPrice(0); // Set a default price
@@ -55,7 +127,7 @@ function ExtendDuration () {
         <h1 className="text-4xl font-semibold">Extend Duration</h1>
         <Card className="mt-8 p-8 mx-auto justify-center">
           <h1 className="text-2xl font-semibold text-center justify-center">
-            gavincool.emn
+          {(dataDomainName as { domainName: string })?.domainName}
           </h1>
           <Divider colorScheme="gray" className="my-4" />
           <div className="flex">
@@ -63,7 +135,7 @@ function ExtendDuration () {
               Extend Duration:
             </h1>
             <DropdownButton
-              values={["30 day", "90 day", "365 day", "720 day"]}
+              values={["30 day", "90 day", "365 day", "730 day"]}
               defaultValue={selectedItem}
               onDurationChange={handleDurationChange}
             />
@@ -105,7 +177,7 @@ function ExtendDuration () {
               htmlSize={9}
               width="auto"
               variant="filled"
-              value="dd/mm/yy"
+              value={expiryDate}
               readOnly
             />
           </div>
@@ -124,7 +196,8 @@ function ExtendDuration () {
             />
           </div>
           <div className="flex justify-center mt-6">
-            <Button colorScheme="blackAlpha" variant="solid" className="w-1/2">
+            <Button colorScheme="blackAlpha" variant="solid" className="w-1/2"
+            onClick={handleClick}>
               Confirm Extention
             </Button>
           </div>
