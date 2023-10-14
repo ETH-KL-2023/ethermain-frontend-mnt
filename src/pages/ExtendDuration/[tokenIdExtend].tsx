@@ -4,8 +4,12 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, JSX, SVGProps, useEffect, useRef, useState } from "react";
 import DropdownButton from "@/components/DropdownButton";
+import { useRouter } from "next/router";
 
 function ExtendDuration () {
+  const router = useRouter();
+  const { tokenIdExtend } = router.query;
+  
   const [selectedItem, setSelectedItem] = useState("Duration");
   const [price, setPrice] = useState(0);
   const [registrarPrice, setRegistrarPrice] = useState(0.005);

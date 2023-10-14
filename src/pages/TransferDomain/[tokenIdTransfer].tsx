@@ -6,6 +6,7 @@ import { Fragment, JSX, SVGProps, useEffect, useRef, useState } from "react";
 function TransferDomain () {
   const router = useRouter();
   const { tokenIdTransfer } = router.query;
+  
   const [subtotalPrice, setSubtotalPrice] = useState(0.15);
 
   return (
