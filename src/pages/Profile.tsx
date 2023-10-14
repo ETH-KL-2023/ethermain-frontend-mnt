@@ -146,8 +146,8 @@ function TokenData({ tokenId }: any) {
   if (error) return <p>Error fetching data for token {tokenId}</p>;
 
   const goToSettings = () => {
-    router.push(`/ManageDomain/${tokenId}`);
-  }
+    router.push(`/Settings/${tokenId}`);
+  };
 
   return (
     <div>
@@ -169,7 +169,10 @@ function TokenData({ tokenId }: any) {
               _domainName={data?.domainName}
             />
 
-            <button className="w-1/3 p-2 bg-slate-400 rounded-lg border-2 text-white font-semibold" onClick={goToSettings}>
+            <button
+              className="w-1/3 p-2 bg-slate-400 rounded-lg border-2 text-white font-semibold"
+              onClick={goToSettings}
+            >
               Settings
             </button>
           </span>
@@ -180,8 +183,13 @@ function TokenData({ tokenId }: any) {
   );
 }
 
-function ListModal({_tokenId,_domainName,}: {_tokenId: any; _domainName: string;})
- {
+function ListModal({
+  _tokenId,
+  _domainName,
+}: {
+  _tokenId: any;
+  _domainName: string;
+}) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [price, setPrice] = useState<string>("");
@@ -360,12 +368,8 @@ function ListedData({ tokenId }: any) {
             {/* <button className="w-1/3 p-2 bg-slate-400 rounded-lg border-2 text-white font-semibold">
               Relist
             </button> */}
-           
 
-            <ReListModal
-              _tokenId={Number(data2[0])}
-              _domainName={data2[2]}
-            />
+            <ReListModal _tokenId={Number(data2[0])} _domainName={data2[2]} />
           </span>
         </div>
       </div>
