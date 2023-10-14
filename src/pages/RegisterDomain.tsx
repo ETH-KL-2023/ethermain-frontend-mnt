@@ -7,9 +7,11 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { BsFillPersonFill } from "react-icons/bs";
 import { useRouter } from "next/router";
 import OwnerCard from "@/components/OwnerCard";
+import ConfirmRegistration from "./ConfirmRegistration";
 
 function RegisterDomain() {
-  const [activeSearch, setActiveSearch] = useState<string[]>([]);
+  const [searchValue, setSearchValue] = useState("");
+  const [inputValue, setInputValue] = useState("");
   const [searchButtonClicked, setSearchButtonClicked] = useState(false);
   const [showOwner1, setShowOwner1] = useState(false);
   const [showOwner2, setShowOwner2] = useState(false);
@@ -18,17 +20,11 @@ function RegisterDomain() {
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
-    if (inputValue.length < 3) {
-      setActiveSearch([]);
-      return false;
-    } else {
-      setActiveSearch(
-        words.filter((w) => w.includes(e.target.value)).slice(0, 4)
-      );
-    }
+    setInputValue(inputValue);
   };
 
   const handleSearchButtonClick = () => {
+    setSearchValue(inputValue);
     setSearchButtonClicked(true);
   };
 
@@ -58,15 +54,6 @@ function RegisterDomain() {
             <AiOutlineSearch className="text-3xl text-slate-400" />
           </button>
         </div>
-        {activeSearch.length > 0 && (
-          <div className="w-1/2 mt-2 mr-16 p-4 bg-transparent text-black border-2 border-slate-400 rounded-xl flex flex-col gap-2">
-            {activeSearch.map((s, index) => (
-              <span key={index} className="pb-2 border-b border-gray-300">
-                {s}
-              </span>
-            ))}
-          </div>
-        )}
         {searchButtonClicked == true && (
           <Card className="w-7/12 mt-8 p-8 mx-auto justify-center" variant="">
             <h1 className="text-2xl font-semibold text-center justify-center">
@@ -74,7 +61,7 @@ function RegisterDomain() {
             </h1>
             <div className="flex mt-8">
               <h1 className="ml-4 text-lg text-left font-semibold mr-4 mt-1">
-                gavin.emn
+                {searchValue + ".emn"}
               </h1>
               <div className="relative inline-block">
                 <button
@@ -108,7 +95,7 @@ function RegisterDomain() {
             </h1>
             <div className="flex mt-8">
               <h1 className="ml-4 text-lg text-left font-semibold mr-20 mt-1">
-                gavin123.emn
+                {searchValue + "123.emn"}
               </h1>
               <button
                 className="w-1/6 ml-96 px-3 p-2 text-md font-medium text-white text-center bg-slate-500 rounded-lg"
@@ -120,7 +107,7 @@ function RegisterDomain() {
             <Divider colorScheme="gray" className="my-4" />
             <div className="flex mt-8">
               <h1 className="ml-4 text-lg text-left font-semibold mr-4 mt-1">
-                gavincool.emn
+                {searchValue + "123.emn"}
               </h1>
               <div className="relative inline-block">
                 <button

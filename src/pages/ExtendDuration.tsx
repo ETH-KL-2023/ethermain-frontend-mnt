@@ -27,12 +27,12 @@ function ExtendDuration () {
         setPrice(0.01);
         break;
       case "90 day":
-        setPrice(0.02);
+        setPrice(0.025);
         break;
       case "365 day":
         setPrice(0.05);
         break;
-      case "720 day":
+      case "730 day":
         setPrice(0.1);
         break;
       default:
