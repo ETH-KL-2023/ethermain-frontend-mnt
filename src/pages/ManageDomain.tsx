@@ -5,13 +5,18 @@ import { Fragment, JSX, SVGProps, useEffect, useRef, useState } from "react";
 
 function ManageDomain() {
   const [selectedItemAlgo, setSelectedItemAlgo] = useState("13: ECDSA/P256/SHA256");
+  const [selectedItemDigest, setSelectedItemDigest] = useState("2: SHA256");
 
   const handleAlgoChange = (newDuration: any) => {
     setSelectedItemAlgo(newDuration);
   };
 
+  const handleDigestChange = (newDuration: any) => {
+    setSelectedItemDigest(newDuration);
+  };
+
   return (
-    <div className="h-screen bg-gradient-to-r from-blue-100 via-pink-100 to-purple-100">
+    <div className="h-full bg-gradient-to-r from-blue-100 via-pink-100 to-purple-100">
       <Navbar />
       <div className="mt-8 w-1/2 mx-auto items-center justify-center">
         <h1 className="text-4xl font-semibold">Manage DNS</h1>
@@ -98,9 +103,45 @@ function ManageDomain() {
               />
             </div>
           </div>
-          <div className="flex justify-center mt-14">
+          <div className="flex flex-row w-full my-1">
+            <div className="w-1/4 p-2 bg-transparent">
+              <h1 className="text-lg text-left font-semibold mr-4 mt-1">
+                Digest Type:
+              </h1>
+            </div>
+            <div className="w-3/4 p-2 bg-transparent">
+              <DropdownButtonProfile
+                values={[
+                  "2: SHA256",
+                  "1: SHA-1",
+                ]}
+                defaultValue={selectedItemDigest}
+                onDurationChange={handleDigestChange}
+              />
+            </div>
+          </div>
+          <div className="flex flex-row w-full my-1">
+            <div className="w-1/4 p-2 bg-transparent">
+              <h1 className="text-lg text-left font-semibold mr-4 mt-1">
+                Digest:
+              </h1>
+            </div>
+            <div className="w-3/4 p-2 bg-transparent">
+              <Input
+                className="text-sm font-medium text-right"
+                htmlSize={50}
+                width="auto"
+                variant="outline"
+                borderColor="gray"
+                placeholder="Enter digest here..."
+                value="2089c5c7aa8...fd3fd23cf7"
+              />
+            </div>
+          </div>
+          <Divider colorScheme="gray" className="my-4" />
+          <div className="flex justify-center mt-10">
             <Button colorScheme="blackAlpha" variant="solid" className="w-1/2">
-              Transfer Domain
+              Update
             </Button>
           </div>
         </Card>

@@ -53,7 +53,7 @@ function ConfirmRegistration() {
   //////////////////////////////////////////////////////////////////////////////////////////
   const { address, isConnecting, isDisconnected } = useAccount();
 
-  const [dnsName, setdnsName] = useState<string>("try2.ethermain"); // INPUT HARD CODE DI SINI
+  const [dnsName, setdnsName] = useState<string>("gavin123.emn"); // INPUT HARD CODE DI SINI
   const [time, setTime] = useState<string>("1"); // INPUT HARD CODE DI SINI
 
   const [tokenId, setTokenId] = useState<any>(null);
