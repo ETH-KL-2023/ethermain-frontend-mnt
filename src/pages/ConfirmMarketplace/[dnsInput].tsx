@@ -3,13 +3,24 @@ import { getSupabase } from "@/shared/utils";
 import { Button, Card, Divider, Input } from "@chakra-ui/react";
 import { Fragment, JSX, SVGProps, useEffect, useRef, useState } from "react";
 import { useAccount, useContractWrite, usePrepareContractWrite } from "wagmi";
-import { LISTING_CONTRACT_ADDRESS } from "../../globalvar";
-import abiiListing from "../../abiiListing.json";
+import { LISTING_CONTRACT_ADDRESS } from "../../../globalvar";
+import abiiListing from "../../../abiiListing.json";
 import { parseEther } from "viem";
+import { useRouter } from "next/router";
 
 function ConfirmMarketplace() {
   /////////////////////////////////////
   const supabase = getSupabase();
+
+  const router = useRouter();
+  const { dnsInput } = router.query;
+  const [dnsName, setdnsName] = useState<string>(dnsInput + ".emn");
+
+  useEffect(() => {
+    if (router.isReady) { // ensures dns value is available
+        setdnsName(dnsInput ? dnsInput + "123.emn" : "defaultvalue.emn"); // you can set a default value if dns is not available for any reason
+    }
+}, [router.isReady, dnsInput]);
 
   async function checkiftokenListed(tokenId: number) {
     const { data, error } = await supabase
@@ -155,7 +166,7 @@ function ConfirmMarketplace() {
         <h1 className="text-4xl font-semibold">Confirm Purchase</h1>
         <Card className="mt-8 p-8 mx-auto justify-center">
           <h1 className="text-2xl font-semibold text-center justify-center">
-            gavincool.emn
+            {dnsName}
           </h1>
           <Divider colorScheme="gray" className="my-4" />
           <div className="flex mt-2">

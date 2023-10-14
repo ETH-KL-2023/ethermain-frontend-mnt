@@ -43,19 +43,19 @@ function ConfirmRegistration () {
     // Update the price based on the selected duration
     switch (newDuration) {
       case "30 day":
-        setPrice(0.01);
+        setPrice(0.015);
         setTime("1");
         break;
       case "90 day":
-        setPrice(0.025);
+        setPrice(0.03);
         setTime("2");
         break;
       case "365 day":
-        setPrice(0.05);
+        setPrice(0.055);
         setTime("3");
         break;
       case "730 day":
-        setPrice(0.1);
+        setPrice(0.105);
         setTime("4");
         break;
       default:
@@ -145,7 +145,7 @@ function ConfirmRegistration () {
           </div>
           <Divider colorScheme="gray" className="my-4" />
 
-          {/* <div className="flex mt-2">
+          <div className="flex mt-2">
             <h1 className="mt-2 text-lg text-left font-semibold">
               Registrar Fee:
             </h1>
@@ -157,8 +157,8 @@ function ConfirmRegistration () {
               value={`${registrarPrice} ETH`}
               readOnly
             />
-          </div> */}
-          {/* <div className="flex mt-4">
+          </div>
+          <div className="flex mt-4">
             <h1 className="mt-2 text-lg text-left font-semibold">
               Domain Expiry:
             </h1>
@@ -170,8 +170,8 @@ function ConfirmRegistration () {
               value="dd/mm/yy"
               readOnly
             />
-          </div> */}
-          {/* <Divider colorScheme="gray" className="my-4" />
+          </div>
+          <Divider colorScheme="gray" className="my-4" />
           <div className="flex mt-2 mb-8">
             <h1 className="ml-96 mt-2 text-lg text-left font-semibold">
               Subtotal:
@@ -184,7 +184,7 @@ function ConfirmRegistration () {
               value={`${subtotalPrice} ETH`}
               readOnly
             />
-          </div> */}
+          </div>
 
           <div className="flex justify-center mt-10">
             <button

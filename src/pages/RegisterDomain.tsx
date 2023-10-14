@@ -72,7 +72,7 @@ function RegisterDomain() {
                 {showOwner1 && (
                   <div className="absolute z-10 top-0 left-0 -mt-44 -ml-16">
                     <OwnerCard
-                      domainName="gavin.emn"
+                      domainName={searchValue + ".emn"}
                       ownerAddress="0xawfj90jf0aw9h03"
                       expiryDate="13/10/2024"
                     />
@@ -106,7 +106,7 @@ function RegisterDomain() {
             <Divider colorScheme="gray" className="my-4" />
             <div className="flex mt-8">
               <h1 className="ml-4 text-lg text-left font-semibold mr-4 mt-1">
-                {searchValue + "123.emn"}
+                {searchValue + "cool.emn"}
               </h1>
               <div className="relative inline-block">
                 <button
@@ -118,7 +118,7 @@ function RegisterDomain() {
                 {showOwner2 && (
                   <div className="absolute z-10 top-0 left-0 -mt-44 -ml-16">
                     <OwnerCard
-                      domainName="gavincool.emn"
+                      domainName={searchValue + "cool.emn"}
                       ownerAddress="0xui7awjk89awd"
                       expiryDate="13/10/2025"
                     />
