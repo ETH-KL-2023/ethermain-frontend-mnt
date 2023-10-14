@@ -24,15 +24,18 @@ import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
 export default function App({ Component, pageProps }: AppProps) {
   const { chains, publicClient } = configureChains(
-
-    [ taikoJolnir,sepolia, mantleTestnet, polygonMumbai, localhost],
+    [taikoJolnir, mantleTestnet, polygonMumbai, localhost],
     [
-      // alchemyProvider({
-      //   apiKey: process.env.ALCHEMY_ID || "G2wTgadhRVq6NtbD-vV3dXf1cmctSlQm",
+      // //Mantle
+      // jsonRpcProvider({
+      //   rpc: chain => ({
+      //     http: `https://rpc.testnet.mantle.xyz`,
+      //   }),
       // }),
-      // publicProvider(),
+      
+      //Taiko
       jsonRpcProvider({
-        rpc: chain => ({
+        rpc: (chain) => ({
           http: `https://rpc.jolnir.taiko.xyz`,
         }),
       }),
