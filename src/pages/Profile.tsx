@@ -365,11 +365,12 @@ function ListedData({ tokenId }: any) {
             >
               Delist
             </button>
-            {/* <button className="w-1/3 p-2 bg-slate-400 rounded-lg border-2 text-white font-semibold">
-              Relist
-            </button> */}
-
-            <ReListModal _tokenId={Number(data2[0])} _domainName={data2[2]} />
+            
+            {data2 ? (
+              <ReListModal _tokenId={Number(data2[0])} _domainName={data2[2]} />
+            ) : (
+              <p>Wait...</p>
+            )}
           </span>
         </div>
       </div>
