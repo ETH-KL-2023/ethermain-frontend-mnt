@@ -7,18 +7,28 @@ import DropdownButton from "@/components/DropdownButton";
 import { getSupabase } from "@/shared/utils";
 import { useAccount, useContractWrite, usePrepareContractWrite } from "wagmi";
 import { parseEther } from "viem";
-import abiiRegistry from "../../abiiRegistry.json"
+import abiiRegistry from "../../../abiiRegistry.json"
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from 'next/router';
 
-import { REGISTRY_CONTRACT_ADDRESS } from "../../globalvar";
-import { LISTING_CONTRACT_ADDRESS } from "../../globalvar";
+import { REGISTRY_CONTRACT_ADDRESS } from "../../../globalvar";
+import { LISTING_CONTRACT_ADDRESS } from "../../../globalvar";
 
 function ConfirmRegistration () {
   const [selectedItem, setSelectedItem] = useState("Duration");
   const [price, setPrice] = useState(0);
   const [registrarPrice, setRegistrarPrice] = useState(0.005);
   const [subtotalPrice, setSubtotalPrice] = useState(0.005);
+
+  const router = useRouter();
+  const { dns } = router.query;
+
+  useEffect(() => {
+    if (router.isReady) { // ensures dns value is available
+        setdnsName(dns ? dns + "123.emn" : "defaultvalue.emn"); // you can set a default value if dns is not available for any reason
+    }
+}, [router.isReady, dns]);
 
   // useEffect(() => {
   //   const TotalPrice = price + registrarPrice;
@@ -60,7 +70,7 @@ function ConfirmRegistration () {
   //////////////////////////////////////////////////////////////////////////////////////////
   const { address, isConnecting, isDisconnected } = useAccount();
 
-  const [dnsName, setdnsName] = useState<string>(searchValue + "123.emn"); // INPUT HARD CODE DI SINI
+  const [dnsName, setdnsName] = useState<string>(dns + "123.emn"); // INPUT HARD CODE DI SINI
   const [time, setTime] = useState<string>("1"); // INPUT HARD CODE DI SINI
 
   const [tokenId, setTokenId] = useState<any>(null);

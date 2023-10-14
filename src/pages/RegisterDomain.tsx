@@ -7,7 +7,6 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { BsFillPersonFill } from "react-icons/bs";
 import { useRouter } from "next/router";
 import OwnerCard from "@/components/OwnerCard";
-import ConfirmRegistration from "./ConfirmRegistration";
 
 function RegisterDomain() {
   const [searchValue, setSearchValue] = useState("");
@@ -29,7 +28,7 @@ function RegisterDomain() {
   };
 
   const handleRegisterButtonClick = () => {
-    router.push("/ConfirmRegistration");
+    router.push(`/ConfirmRegister/${searchValue}`);
   };
 
   const handleBuyButtonClick = () => {
