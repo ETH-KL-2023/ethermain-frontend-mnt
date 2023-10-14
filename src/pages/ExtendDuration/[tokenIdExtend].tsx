@@ -28,16 +28,16 @@ function ExtendDuration () {
     // Update the price based on the selected duration
     switch (newDuration) {
       case "30 day":
-        setPrice(0.01);
+        setPrice(0.015);
         break;
       case "90 day":
-        setPrice(0.025);
+        setPrice(0.030);
         break;
       case "365 day":
-        setPrice(0.05);
+        setPrice(0.055);
         break;
       case "730 day":
-        setPrice(0.1);
+        setPrice(0.105);
         break;
       default:
         setPrice(0); // Set a default price
@@ -63,7 +63,7 @@ function ExtendDuration () {
               Extend Duration:
             </h1>
             <DropdownButton
-              values={["30 day", "90 day", "365 day", "720 day"]}
+              values={["30 day", "90 day", "365 day", "730 day"]}
               defaultValue={selectedItem}
               onDurationChange={handleDurationChange}
             />
