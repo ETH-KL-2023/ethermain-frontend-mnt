@@ -13,22 +13,29 @@ import {
   Chain,
   localhost,
   polygonMumbai,
+  taikoJolnir,
 } from "viem/chains";
 import { configureChains, mainnet, createConfig, WagmiConfig } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import "@rainbow-me/rainbowkit/styles.css";
 import { ChakraProvider } from "@chakra-ui/react";
+import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
 export default function App({ Component, pageProps }: AppProps) {
   const { chains, publicClient } = configureChains(
 
-    [sepolia, mantleTestnet, polygonMumbai, localhost],
+    [ taikoJolnir,sepolia, mantleTestnet, polygonMumbai, localhost],
     [
-      alchemyProvider({
-        apiKey: process.env.ALCHEMY_ID || "G2wTgadhRVq6NtbD-vV3dXf1cmctSlQm",
+      // alchemyProvider({
+      //   apiKey: process.env.ALCHEMY_ID || "G2wTgadhRVq6NtbD-vV3dXf1cmctSlQm",
+      // }),
+      // publicProvider(),
+      jsonRpcProvider({
+        rpc: chain => ({
+          http: `https://rpc.jolnir.taiko.xyz`,
+        }),
       }),
-      publicProvider(),
     ]
   );
 
