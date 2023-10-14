@@ -174,8 +174,13 @@ function TokenData({ tokenId }: any) {
   );
 }
 
-function ListModal({_tokenId,_domainName,}: {_tokenId: any; _domainName: string;})
- {
+function ListModal({
+  _tokenId,
+  _domainName,
+}: {
+  _tokenId: any;
+  _domainName: string;
+}) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [price, setPrice] = useState<string>("");
@@ -351,15 +356,12 @@ function ListedData({ tokenId }: any) {
             >
               Delist
             </button>
-            {/* <button className="w-1/3 p-2 bg-slate-400 rounded-lg border-2 text-white font-semibold">
-              Relist
-            </button> */}
-           
 
-            <ReListModal
-              _tokenId={Number(data2[0])}
-              _domainName={data2[2]}
-            />
+            {data2 ? (
+              <ReListModal _tokenId={Number(data2[0])} _domainName={data2[2]} />
+            ) : (
+              <p>Wait...</p>
+            )}
           </span>
         </div>
       </div>
