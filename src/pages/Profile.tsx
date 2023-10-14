@@ -3,7 +3,22 @@ import abii from "../../abii.json";
 import { getSupabase } from "@/shared/utils";
 import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
-import { Card, Divider } from "@chakra-ui/react";
+import {
+  Button,
+  Card,
+  Divider,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { parseEther } from "viem";
+import { usePrepareContractWrite } from "wagmi";
+
 
 export default function Profile() {
   const { address, isConnecting, isDisconnected } = useAccount();
@@ -13,6 +28,7 @@ export default function Profile() {
   const [listedIds, setListedIds] = useState<number[]>([]);
 
   const supabase = getSupabase();
+
   async function fetchAndSetTokenIdsByAddress(address: string) {
     try {
       const { data, error } = await supabase
@@ -110,6 +126,7 @@ export default function Profile() {
   );
 }
 
+////////////////////////////////////////////////////////////////// TOKEN DATA
 function TokenData({ tokenId }: any) {
   const { data, error, isLoading } = useContractRead({
     // fetch token data
@@ -133,9 +150,15 @@ function TokenData({ tokenId }: any) {
         </div>
         <div className="w-1/2 p-2 bg-transparent ml-64">
           <span>
-            <button className="w-1/3 p-2 mr-4 bg-slate-400 rounded-lg border-2 text-white font-semibold">
+            {/* <button className="w-1/3 p-2 mr-4 bg-slate-400 rounded-lg border-2 text-white font-semibold">
               List
-            </button>
+            </button> */}
+
+            <ListModal
+              _tokenId={data?.tokenId?.toString()}
+              _domainName={data?.domainName}
+            />
+
             <button className="w-1/3 p-2 bg-slate-400 rounded-lg border-2 text-white font-semibold">
               Settings
             </button>
@@ -146,6 +169,60 @@ function TokenData({ tokenId }: any) {
     </div>
   );
 }
+
+function ListModal({_tokenId,_domainName,}: {_tokenId: string;_domainName: string;}) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  // const { config } = usePrepareContractWrite({
+  //   address: "0x6A9898DFe2c89A1cc5e4373a99eD59447560c946",
+  //   abi: abii,
+  //   functionName: "registerDNS",
+  //   value: parseEther("0.01"),
+  //   args: [dnsName, time],
+  //   onError(error) {
+  //     console.log("Error is", error)
+      
+  //   },
+  //   onSuccess(data) {
+  //     console.log("Success", data);
+  //   },
+  // });
+
+
+
+
+
+  return (
+    <>
+      <button
+        onClick={onOpen}
+        className="w-1/3 p-2 mr-4 bg-slate-400 rounded-lg border-2 text-white font-semibold"
+      >
+        List
+      </button>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>{_domainName}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>price</ModalBody>
+
+          <ModalFooter className=" gap-6">
+            <Button variant="ghost">LIST</Button>
+            <Button colorScheme="blue" mr={3} onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+}
+
+////////////////////////////////////////////////////////////////// TOKEN DATA
+
+
 
 function ListedData({ tokenId }: any) {
   // fetch listed data
