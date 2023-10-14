@@ -2,11 +2,12 @@ import Navbar from "@/components/Navbar";
 import { getSupabase } from "@/shared/utils";
 import { Button, Card, Divider, Input } from "@chakra-ui/react";
 import { Fragment, JSX, SVGProps, useEffect, useRef, useState } from "react";
-import { useAccount, useContractWrite, usePrepareContractWrite } from "wagmi";
-import { LISTING_CONTRACT_ADDRESS } from "../../../globalvar";
+import { useAccount, useContractRead, useContractWrite, usePrepareContractWrite } from "wagmi";
+import { LISTING_CONTRACT_ADDRESS, REGISTRY_CONTRACT_ADDRESS } from "../../../globalvar";
 import abiiListing from "../../../abiiListing.json";
 import { parseEther } from "viem";
 import { useRouter } from "next/router";
+import abiiRegistry from "../../../abiiRegistry.json"
 
 function ConfirmMarketplace() {
   /////////////////////////////////////
@@ -137,12 +138,29 @@ function ConfirmMarketplace() {
 
   const { address, isConnecting, isDisconnected } = useAccount();
 
+
+  const {
+    data: tokenId,
+    error,
+    isLoading: loading1,
+  } = useContractRead({
+    // fetch token data
+    address: REGISTRY_CONTRACT_ADDRESS,
+    abi: abiiRegistry,
+    functionName: "checkActiveDomainName",
+    args:[dnsName],
+    onSettled(data, error) {
+      console.log("Settled", { data, error });
+    },
+  });
+
+
   const { config } = usePrepareContractWrite({
     address: LISTING_CONTRACT_ADDRESS,
     abi: abiiListing,
     functionName: "buy",
-    value: parseEther('0.01'),
-    args: [1],    //HARD CODEEEEEEE
+    value: parseEther('0.15'),
+    args: [Number(tokenId)],    //HARD CODEEEEEEE Nama function: checkActiveDomainName
     onError(error) {
       console.log("Error", error);
     },
@@ -151,6 +169,7 @@ function ConfirmMarketplace() {
     },
   });
   const { data, isLoading, isSuccess, write } = useContractWrite(config);
+
 
   function handleClick() {
     processTokenForAddress(String(address), Number(1)); //HARD CODEEEEEEE

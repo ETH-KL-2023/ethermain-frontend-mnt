@@ -43,20 +43,24 @@ function ConfirmRegistration () {
     // Update the price based on the selected duration
     switch (newDuration) {
       case "30 day":
-        setPrice(0.015);
+        setPrice(0.01);
         setTime("1");
+        setSubtotalPrice(0.015);
         break;
       case "90 day":
-        setPrice(0.03);
+        setPrice(0.025);
         setTime("2");
+        setSubtotalPrice(0.03);
         break;
       case "365 day":
-        setPrice(0.055);
+        setPrice(0.05);
         setTime("3");
+        setSubtotalPrice(0.055);
         break;
       case "730 day":
-        setPrice(0.105);
+        setPrice(0.1);
         setTime("4");
+        setSubtotalPrice(0.105);
         break;
       default:
         setPrice(0); // Set a default price
@@ -84,7 +88,7 @@ function ConfirmRegistration () {
 
     abi: abiiRegistry,
     functionName: "registerDNS",
-    value: parseEther(price.toString()),
+    value: parseEther(subtotalPrice.toString()),
     args: [dnsName, time],
     onError(error) {
       toast.error("Error: Domain is already taken", {
@@ -124,7 +128,7 @@ function ConfirmRegistration () {
               Set Duration:
             </h1>
             <DropdownButton
-              values={["30 day", "90 day", "365 day", "720 day"]}
+              values={["30 day", "90 day", "365 day", "730 day"]}
               defaultValue={selectedItem}
               onDurationChange={handleDurationChange}
             />

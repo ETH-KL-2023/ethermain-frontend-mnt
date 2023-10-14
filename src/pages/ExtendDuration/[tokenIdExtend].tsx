@@ -43,8 +43,8 @@ function ExtendDuration () {
     address:REGISTRY_CONTRACT_ADDRESS,
     abi: abiiRegistry,
     functionName: "updateExpiryDate",
-    value: parseEther(price.toString()),
-    args: [tokenIdExtend, price],
+    value: parseEther(subtotalPrice.toString()),
+    args: [tokenIdExtend, time],
     onError(error) {
       console.log("Error", error)
     },
@@ -62,24 +62,27 @@ function ExtendDuration () {
 
   const handleDurationChange = (newDuration: any) => {
     setSelectedItem(newDuration);
-
     // Update the price based on the selected duration
     switch (newDuration) {
       case "30 day":
-        setPrice(0.015);
+        setPrice(0.01);
         setTime("1");
+        setSubtotalPrice(0.015);
         break;
       case "90 day":
-        setPrice(0.03);
+        setPrice(0.025);
         setTime("2");
+        setSubtotalPrice(0.03);
         break;
       case "365 day":
-        setPrice(0.055);
+        setPrice(0.05);
         setTime("3");
+        setSubtotalPrice(0.055);
         break;
       case "730 day":
-        setPrice(0.105);
+        setPrice(0.1);
         setTime("4");
+        setSubtotalPrice(0.105);
         break;
       default:
         setPrice(0); // Set a default price
