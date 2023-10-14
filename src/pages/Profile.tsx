@@ -1,5 +1,4 @@
-import { useAccount, useContractRead } from "wagmi";
-import abii from "../../abii.json";
+import { useAccount, useContractRead, useContractWrite } from "wagmi";
 import { getSupabase } from "@/shared/utils";
 import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
@@ -18,7 +17,12 @@ import {
 } from "@chakra-ui/react";
 import { parseEther } from "viem";
 import { usePrepareContractWrite } from "wagmi";
-
+import {
+  LISTING_CONTRACT_ADDRESS,
+  REGISTRY_CONTRACT_ADDRESS,
+} from "../../globalvar";
+import abiiRegistry from "../../abiiRegistry.json";
+import abiiListing from "../../abiiListing.json";
 
 export default function Profile() {
   const { address, isConnecting, isDisconnected } = useAccount();
@@ -126,12 +130,12 @@ export default function Profile() {
   );
 }
 
-////////////////////////////////////////////////////////////////// TOKEN DATA
+////////////////////////////////////////////////////////////////// ACTIVE LISTING
 function TokenData({ tokenId }: any) {
   const { data, error, isLoading } = useContractRead({
     // fetch token data
-    address: "0x6A9898DFe2c89A1cc5e4373a99eD59447560c946",
-    abi: abii,
+    address: REGISTRY_CONTRACT_ADDRESS,
+    abi: abiiRegistry,
     functionName: "getDNSData",
     args: [tokenId],
   });
@@ -170,27 +174,27 @@ function TokenData({ tokenId }: any) {
   );
 }
 
-function ListModal({_tokenId,_domainName,}: {_tokenId: string;_domainName: string;}) {
+function ListModal({_tokenId,_domainName,}: {_tokenId: string; _domainName: string;}) {
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  // const { config } = usePrepareContractWrite({
-  //   address: "0x6A9898DFe2c89A1cc5e4373a99eD59447560c946",
-  //   abi: abii,
-  //   functionName: "registerDNS",
-  //   value: parseEther("0.01"),
-  //   args: [dnsName, time],
-  //   onError(error) {
-  //     console.log("Error is", error)
-      
-  //   },
-  //   onSuccess(data) {
-  //     console.log("Success", data);
-  //   },
-  // });
+  const [price, setPrice] = useState<string>("");
 
+  const { config } = usePrepareContractWrite({
+    address: LISTING_CONTRACT_ADDRESS,
+    abi: abiiListing,
+    functionName: "list",
+    args: [_tokenId, parseEther(price)],
+    onSuccess(data) {
+      console.log("Success", data);
+    },
+  });
+  const { data, isLoading, isSuccess, write } = useContractWrite(config);
 
-
-
+  function handleListingFunction() {
+    write?.();
+    console.log("manual log", data);
+  }
 
   return (
     <>
@@ -206,10 +210,19 @@ function ListModal({_tokenId,_domainName,}: {_tokenId: string;_domainName: strin
         <ModalContent>
           <ModalHeader>{_domainName}</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>price</ModalBody>
+          <ModalBody className=" font-bold text-lg">Price</ModalBody>
+
+          <input
+            type="text"
+            className="p-3 ml-7 border border-solid h-[40px] w-[200px]"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+          />
 
           <ModalFooter className=" gap-6">
-            <Button variant="ghost">LIST</Button>
+            <Button onClick={handleListingFunction} variant="ghost">
+              LIST
+            </Button>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
               Close
             </Button>
@@ -220,10 +233,14 @@ function ListModal({_tokenId,_domainName,}: {_tokenId: string;_domainName: strin
   );
 }
 
-////////////////////////////////////////////////////////////////// TOKEN DATA
 
 
 
+
+////////////////////////////////////////////////////////////////// ACTIVE LISTING
+
+
+////////////////////////////////////////////////////////////////// LISTED LISTING
 function ListedData({ tokenId }: any) {
   // fetch listed data
   const {
@@ -231,8 +248,8 @@ function ListedData({ tokenId }: any) {
     error,
     isLoading,
   } = useContractRead({
-    address: "0x6A9898DFe2c89A1cc5e4373a99eD59447560c946",
-    abi: abii,
+    address: REGISTRY_CONTRACT_ADDRESS,
+    abi: abiiRegistry,
     functionName: "getDNSData",
     args: [tokenId],
   });
@@ -264,3 +281,4 @@ function ListedData({ tokenId }: any) {
     </div>
   );
 }
+////////////////////////////////////////////////////////////////// LISTED LISTING
