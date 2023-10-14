@@ -159,7 +159,7 @@ function ConfirmMarketplace() {
     address: LISTING_CONTRACT_ADDRESS,
     abi: abiiListing,
     functionName: "buy",
-    value: parseEther('0.15'),
+    value: parseEther('0.015'),
     args: [Number(tokenId)],    //HARD CODEEEEEEE Nama function: checkActiveDomainName
     onError(error) {
       console.log("Error", error);
