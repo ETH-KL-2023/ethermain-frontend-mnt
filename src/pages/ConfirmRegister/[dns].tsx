@@ -7,18 +7,28 @@ import DropdownButton from "@/components/DropdownButton";
 import { getSupabase } from "@/shared/utils";
 import { useAccount, useContractWrite, usePrepareContractWrite } from "wagmi";
 import { parseEther } from "viem";
-import abiiRegistry from "../../abiiRegistry.json"
+import abiiRegistry from "../../../abiiRegistry.json"
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from 'next/router';
 
-import { REGISTRY_CONTRACT_ADDRESS } from "../../globalvar";
-import { LISTING_CONTRACT_ADDRESS } from "../../globalvar";
+import { REGISTRY_CONTRACT_ADDRESS } from "../../../globalvar";
+import { LISTING_CONTRACT_ADDRESS } from "../../../globalvar";
 
-function ConfirmRegistration() {
+function ConfirmRegistration () {
   const [selectedItem, setSelectedItem] = useState("Duration");
   const [price, setPrice] = useState(0);
   const [registrarPrice, setRegistrarPrice] = useState(0.005);
   const [subtotalPrice, setSubtotalPrice] = useState(0.005);
+
+  const router = useRouter();
+  const { dns } = router.query;
+
+  useEffect(() => {
+    if (router.isReady) { // ensures dns value is available
+        setdnsName(dns ? dns + "123.emn" : "defaultvalue.emn"); // you can set a default value if dns is not available for any reason
+    }
+}, [router.isReady, dns]);
 
   // useEffect(() => {
   //   const TotalPrice = price + registrarPrice;
@@ -34,15 +44,19 @@ function ConfirmRegistration() {
     switch (newDuration) {
       case "30 day":
         setPrice(0.01);
+        setTime("1");
         break;
       case "90 day":
-        setPrice(0.02);
+        setPrice(0.025);
+        setTime("2");
         break;
       case "365 day":
         setPrice(0.05);
+        setTime("3");
         break;
-      case "720 day":
+      case "730 day":
         setPrice(0.1);
+        setTime("4");
         break;
       default:
         setPrice(0); // Set a default price
@@ -56,7 +70,8 @@ function ConfirmRegistration() {
   //////////////////////////////////////////////////////////////////////////////////////////
   const { address, isConnecting, isDisconnected } = useAccount();
 
-  const [dnsName, setdnsName] = useState<string>("length5"); // INPUT HARD CODE DI SINI
+
+  const [dnsName, setdnsName] = useState<string>(dns + "123.emn"); // INPUT HARD CODE DI SINI
   const [time, setTime] = useState<string>("1"); // INPUT HARD CODE DI SINI
 
   const [tokenId, setTokenId] = useState<any>(null);
@@ -69,7 +84,7 @@ function ConfirmRegistration() {
 
     abi: abiiRegistry,
     functionName: "registerDNS",
-    value: parseEther("0.01"),
+    value: parseEther(price.toString()),
     args: [dnsName, time],
     onError(error) {
       toast.error("Error: Domain is already taken", {
@@ -89,6 +104,7 @@ function ConfirmRegistration() {
   function handleClick() {
     write?.();
     console.log("manual log", data);
+    console.log("manual log", time);
     handleWallet(address, intToken);
   }
 
