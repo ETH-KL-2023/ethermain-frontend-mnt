@@ -6,8 +6,10 @@ import Navbar from "@/components/Navbar";
 
 export default function Profile() {
   const { address, isConnecting, isDisconnected } = useAccount();
+
   // Define a state variable to store the token IDs
   const [tokenIds, setTokenIds] = useState<number[]>([]);
+  const [listedIds, setListedIds] = useState<number[]>([]);
 
   const supabase = getSupabase();
   async function fetchAndSetTokenIdsByAddress(address: string) {
@@ -36,8 +38,35 @@ export default function Profile() {
     }
   }
 
-  function handleclick() {
+  async function fetchAndSetListedIdsByAddress(address: string) {
+    try {
+      const { data, error } = await supabase
+        .from("tokenTable")
+        .select("listed_id")
+        .eq("Address", address)
+        .single();
+
+      if (error) {
+        console.error("Error fetching listed IDs:", error);
+        setListedIds([]); // Set the state directly here
+        return;
+      }
+
+      if (data && data.listed_id) {
+        setListedIds(data.listed_id); // Set the state directly here
+      } else {
+        console.log(`No tokens found for address ${address}.`);
+        setListedIds([]); // Set the state directly here
+      }
+    } catch (err) {
+      console.error("An unexpected error occurred:", err);
+      setListedIds([]); // Set the state directly here
+    }
+  }
+
+  function handleClick() {
     fetchAndSetTokenIdsByAddress(address as string);
+    fetchAndSetListedIdsByAddress(address as string);
   }
 
   // useEffect(() => {
@@ -55,6 +84,7 @@ export default function Profile() {
     <div>
       <Navbar></Navbar>
       <button onClick={handleClick}>View my token</button>
+
       <br />
       <br />
 
@@ -70,15 +100,17 @@ export default function Profile() {
 
       <div className="h-[300px] w-[700px] bg-amber-300 rounded-xl">
         <h1>listed</h1>
-
+        {listedIds.map((list) => (
+          <ListedData key={list} tokenId={list} />
+        ))}
       </div>
     </div>
   );
 }
 
-
 function TokenData({ tokenId }: any) {
   const { data, error, isLoading } = useContractRead({
+    // fetch token data
     address: "0x6A9898DFe2c89A1cc5e4373a99eD59447560c946",
     abi: abii,
     functionName: "getDNSData",
@@ -90,7 +122,44 @@ function TokenData({ tokenId }: any) {
 
   return (
     <div className="h-[50px] w-[400px] bg-red-600 rounded-xl my-[20px]">
-      <p>ID: {data?.tokenId?.toString()} Name: {data?.domainName} </p>
+      <p>
+        ID: {data?.tokenId?.toString()}
+        <span className="m-[20px]">Name: {data?.domainName}</span>
+      </p>
+      <span>
+        <button>asdasd</button>
+        <button>asdas</button>
+      </span>
+    </div>
+  );
+}
+
+function ListedData({ tokenId }: any) {
+  // fetch listed data
+  const {
+    data: data2,
+    error,
+    isLoading,
+  } = useContractRead({
+    address: "0x6A9898DFe2c89A1cc5e4373a99eD59447560c946",
+    abi: abii,
+    functionName: "getDNSData",
+    args: [tokenId],
+  });
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error fetching data for token {tokenId}</p>;
+
+  return (
+    <div className="h-[50px] w-[400px] bg-red-600 rounded-xl my-[20px]">
+      <p>
+        ID: {data2?.tokenId?.toString()}
+        <span className="m-[20px]">Name: {data2?.domainName}</span>
+      </p>
+      <span>
+        <button>asdasd</button>
+        <button>asddas</button>
+      </span>
     </div>
   );
 }

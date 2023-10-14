@@ -51,7 +51,7 @@ function ConfirmRegistration() {
   //////////////////////////////////////////////////////////////////////////////////////////
   const { address, isConnecting, isDisconnected } = useAccount();
 
-  const [dnsName, setdnsName] = useState<string>("try4"); // INPUT HARD CODE DI SINI
+  const [dnsName, setdnsName] = useState<string>("try5"); // INPUT HARD CODE DI SINI
   const [time, setTime] = useState<string>("1"); // INPUT HARD CODE DI SINI
 
   const [tokenId, setTokenId] = useState<any>(null);
