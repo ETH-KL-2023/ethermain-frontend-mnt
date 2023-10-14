@@ -174,13 +174,8 @@ function TokenData({ tokenId }: any) {
   );
 }
 
-function ListModal({
-  _tokenId,
-  _domainName,
-}: {
-  _tokenId: any;
-  _domainName: string;
-}) {
+function ListModal({_tokenId,_domainName,}: {_tokenId: any; _domainName: string;})
+ {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [price, setPrice] = useState<string>("");
@@ -356,9 +351,15 @@ function ListedData({ tokenId }: any) {
             >
               Delist
             </button>
-            <button className="w-1/3 p-2 bg-slate-400 rounded-lg border-2 text-white font-semibold">
+            {/* <button className="w-1/3 p-2 bg-slate-400 rounded-lg border-2 text-white font-semibold">
               Relist
-            </button>
+            </button> */}
+           
+
+            <ReListModal
+              _tokenId={Number(data2[0])}
+              _domainName={data2[2]}
+            />
           </span>
         </div>
       </div>
@@ -410,4 +411,70 @@ async function moveTokenToTokenId(tokenId: number) {
       console.error("Error updating row:", updateError);
     }
   }
+}
+
+function ReListModal({
+  _tokenId,
+  _domainName,
+}: {
+  _tokenId: any;
+  _domainName: string;
+}) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const [price, setPrice] = useState<string>("");
+
+  const { config } = usePrepareContractWrite({
+    address: LISTING_CONTRACT_ADDRESS,
+    abi: abiiListing,
+    functionName: "relist",
+    args: [_tokenId, parseEther(price)],
+    onSuccess(data) {
+      console.log("Success", data);
+    },
+  });
+  const { data, isLoading, isSuccess, write } = useContractWrite(config);
+
+  function handleListingFunction() {
+    write?.();
+    moveTokenToListed(Number(_tokenId));
+    console.log("tokenId", _tokenId);
+    console.log("manual log", data);
+  }
+
+  return (
+    <>
+      <button
+        onClick={onOpen}
+        className="w-1/3 p-2 mr-4 bg-slate-400 rounded-lg border-2 text-white font-semibold"
+      >
+        ReList
+      </button>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>{_domainName}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody className=" font-bold text-lg">Relist Price</ModalBody>
+
+          <input
+            type="text"
+            className="p-3 ml-7 border border-solid h-[40px] w-[200px]"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+          />
+
+          <ModalFooter className=" gap-6">
+            <Button onClick={handleListingFunction} variant="ghost">
+              LIST
+            </Button>
+            <Button colorScheme="blue" mr={3} onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
 }
