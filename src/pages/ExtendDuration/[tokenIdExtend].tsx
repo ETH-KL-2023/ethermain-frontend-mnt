@@ -6,6 +6,11 @@ import { Fragment, JSX, SVGProps, useEffect, useRef, useState } from "react";
 import DropdownButton from "@/components/DropdownButton";
 import { useRouter } from "next/router";
 
+import { parseEther } from "viem";
+import { useContractWrite, useContractRead, usePrepareContractWrite } from "wagmi";
+import { REGISTRY_CONTRACT_ADDRESS } from "../../../globalvar";
+import abiiRegistry from "../../../abiiRegistry.json";
+
 function ExtendDuration () {
   const router = useRouter();
   const { tokenIdExtend } = router.query;
@@ -14,6 +19,8 @@ function ExtendDuration () {
   const [price, setPrice] = useState(0);
   const [registrarPrice, setRegistrarPrice] = useState(0.005);
   const [subtotalPrice, setSubtotalPrice] = useState(0.005);
+  const [time, setTime] = useState<string>("1"); // INPUT HARD CODE DI SINI
+
 
   useEffect(() => {
     const TotalPrice = price + registrarPrice;
@@ -22,6 +29,37 @@ function ExtendDuration () {
     setSubtotalPrice(parseFloat(formattedTotalPrice));
   }, [price, registrarPrice]);
 
+  //GET domain name from tokenid
+  const { data:dataDomainName, error, isLoading:loading1 } = useContractRead({
+    // fetch token data
+    address: REGISTRY_CONTRACT_ADDRESS,
+    abi: abiiRegistry,
+    functionName: "getDNSData",
+    args: [tokenIdExtend],
+  });
+
+  //Update duration of the domain name
+  const { config } = usePrepareContractWrite({
+    address:REGISTRY_CONTRACT_ADDRESS,
+    abi: abiiRegistry,
+    functionName: "updateExpiryDate",
+    value: parseEther(price.toString()),
+    args: [tokenIdExtend, price],
+    onError(error) {
+      console.log("Error", error)
+    },
+    onSuccess(data) {
+      console.log("Success", data);
+    },
+  });
+
+  const { data, isLoading, isSuccess, write } = useContractWrite(config);
+
+  function handleClick() {
+    console.log(data)
+    write?.();
+  }
+
   const handleDurationChange = (newDuration: any) => {
     setSelectedItem(newDuration);
 
@@ -29,15 +67,19 @@ function ExtendDuration () {
     switch (newDuration) {
       case "30 day":
         setPrice(0.015);
+        setTime("1");
         break;
       case "90 day":
-        setPrice(0.030);
+        setPrice(0.03);
+        setTime("2");
         break;
       case "365 day":
         setPrice(0.055);
+        setTime("3");
         break;
       case "730 day":
         setPrice(0.105);
+        setTime("4");
         break;
       default:
         setPrice(0); // Set a default price
@@ -55,7 +97,7 @@ function ExtendDuration () {
         <h1 className="text-4xl font-semibold">Extend Duration</h1>
         <Card className="mt-8 p-8 mx-auto justify-center">
           <h1 className="text-2xl font-semibold text-center justify-center">
-            gavincool.emn
+          {(dataDomainName as { domainName: string })?.domainName}
           </h1>
           <Divider colorScheme="gray" className="my-4" />
           <div className="flex">
@@ -124,7 +166,8 @@ function ExtendDuration () {
             />
           </div>
           <div className="flex justify-center mt-6">
-            <Button colorScheme="blackAlpha" variant="solid" className="w-1/2">
+            <Button colorScheme="blackAlpha" variant="solid" className="w-1/2"
+            onClick={handleClick}>
               Confirm Extention
             </Button>
           </div>

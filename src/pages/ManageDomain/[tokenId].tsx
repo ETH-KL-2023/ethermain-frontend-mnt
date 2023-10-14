@@ -37,6 +37,7 @@ function ManageDomain() {
     functionName: "registry",
     args: [tokenId],
   });
+  
 //   console.log(dnsData)
     //check dns data
     //if empty set default value
