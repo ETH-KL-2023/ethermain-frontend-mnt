@@ -1,8 +1,11 @@
 import Navbar from "@/components/Navbar";
 import { Button, Card, Divider, Input } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { Fragment, JSX, SVGProps, useEffect, useRef, useState } from "react";
 
 function TransferDomain () {
+  const router = useRouter();
+  const { tokenIdTransfer } = router.query;
   const [subtotalPrice, setSubtotalPrice] = useState(0.15);
 
   return (

@@ -8,14 +8,14 @@ import Navbar from "@/components/Navbar";
 
 function Settings() {
   const router = useRouter();
-  const { tokenId } = router.query;
+  const { tokenIdSetting } = router.query;
 
-  const [currentTokenId, setCurrentTokenId] = useState(tokenId);
+  const [currentTokenId, setCurrentTokenId] = useState(tokenIdSetting);
 
   useEffect(() => {
     // Update currentTokenId when tokenId changes
-    setCurrentTokenId(tokenId);
-  }, [tokenId]);
+    setCurrentTokenId(tokenIdSetting);
+  }, [tokenIdSetting]);
 
   const handleTransferFunction = () => {
     router.push(`/TransferDomain/${currentTokenId}`);
