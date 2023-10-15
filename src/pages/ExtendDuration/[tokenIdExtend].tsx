@@ -149,7 +149,7 @@ function ExtendDuration () {
               htmlSize={8}
               width="auto"
               variant="filled"
-              value={`${price} ETH`}
+              value={`${price} MNT`}
               onChange={(e) => handlePriceChange(e.target.value)}
               readOnly
             />
@@ -164,7 +164,7 @@ function ExtendDuration () {
               htmlSize={9}
               width="auto"
               variant="filled"
-              value={`${registrarPrice} ETH`}
+              value={`${registrarPrice} MNT`}
               readOnly
             />
           </div>
@@ -191,7 +191,7 @@ function ExtendDuration () {
               htmlSize={9}
               width="auto"
               variant="filled"
-              value={`${subtotalPrice} ETH`}
+              value={`${subtotalPrice} MNT`}
               readOnly
             />
           </div>

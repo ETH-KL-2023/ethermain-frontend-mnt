@@ -349,7 +349,7 @@ function ListedData({ tokenId }: any) {
               <text className="text-lg font-semibold">{data2[2]}</text>
               <span className="m-[30px]"></span>
               <text className="text-lg font-semibold">
-                {Number(data2[1]) / 10 ** 18 + " eth"}
+                {Number(data2[1]) / 10 ** 18 + " MNT"}
               </text>
             </>
           ) : (
