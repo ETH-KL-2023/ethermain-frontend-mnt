@@ -197,7 +197,7 @@ function ConfirmMarketplace() {
           <div className="flex mt-2">
             <h1 className="text-lg text-left font-semibold">Listed Price:</h1>
             <text className="ml-2 text-lg text-left font-semibold">
-              0.015 MNT
+              75 MNT
             </text>
           </div>
           <div className="flex mt-2">

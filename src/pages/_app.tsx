@@ -24,21 +24,21 @@ import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
 export default function App({ Component, pageProps }: AppProps) {
   const { chains, publicClient } = configureChains(
-    [taikoJolnir, mantleTestnet, polygonMumbai, localhost],
+    [ mantleTestnet, taikoJolnir, polygonMumbai, localhost],
     [
-      // //Mantle
-      // jsonRpcProvider({
-      //   rpc: chain => ({
-      //     http: `https://rpc.testnet.mantle.xyz`,
-      //   }),
-      // }),
-      
-      //Taiko
+      //Mantle
       jsonRpcProvider({
-        rpc: (chain) => ({
-          http: `https://rpc.jolnir.taiko.xyz`,
+        rpc: chain => ({
+          http: `https://rpc.testnet.mantle.xyz`,
         }),
       }),
+      
+      // //Taiko
+      // jsonRpcProvider({
+      //   rpc: (chain) => ({
+      //     http: `https://rpc.jolnir.taiko.xyz`,
+      //   }),
+      // }),
     ]
   );
 
