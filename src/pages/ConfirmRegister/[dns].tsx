@@ -18,8 +18,8 @@ import { LISTING_CONTRACT_ADDRESS } from "../../../globalvar";
 function ConfirmRegistration () {
   const [selectedItem, setSelectedItem] = useState("Duration");
   const [price, setPrice] = useState(0);
-  const [registrarPrice, setRegistrarPrice] = useState(0.005);
-  const [subtotalPrice, setSubtotalPrice] = useState(0.005);
+  const [registrarPrice, setRegistrarPrice] = useState(25);
+  const [subtotalPrice, setSubtotalPrice] = useState(25);
   const [expiryDate, setExpiryDate] = useState('dd/mm/yy'); 
 
   const formatDate = (date: Date) => {

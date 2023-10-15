@@ -17,8 +17,8 @@ function ExtendDuration () {
   
   const [selectedItem, setSelectedItem] = useState("Duration");
   const [price, setPrice] = useState(0);
-  const [registrarPrice, setRegistrarPrice] = useState(0.005);
-  const [subtotalPrice, setSubtotalPrice] = useState(0.005);
+  const [registrarPrice, setRegistrarPrice] = useState(25);
+  const [subtotalPrice, setSubtotalPrice] = useState(25);
   const [time, setTime] = useState<string>("1"); // INPUT HARD CODE DI SINI
   const [expiryDate, setExpiryDate] = useState('dd/mm/yy'); 
 
