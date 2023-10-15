@@ -52,9 +52,9 @@ function ConfirmRegistration () {
     // Update the price based on the selected duration
     switch (newDuration) {
       case "30 day":
-        setPrice(0.01);
+        setPrice(50);
         setTime("1");
-        setSubtotalPrice(0.015);
+        setSubtotalPrice(75);
 
         const expiryDate30 = new Date(currentDate);
         expiryDate30.setDate(currentDate.getDate() + 30); // Adding 30 days
@@ -62,27 +62,27 @@ function ConfirmRegistration () {
         break;
 
       case "90 day":
-        setPrice(0.025);
+        setPrice(125);
         setTime("2");
-        setSubtotalPrice(0.03);
+        setSubtotalPrice(150);
 
         const expiryDate90 = new Date(currentDate);
         expiryDate90.setDate(currentDate.getDate() + 90); // Adding 90 days
         setExpiryDate(formatDate(expiryDate90)); // Format as DD/MM/YYYY
         break;
       case "365 day":
-        setPrice(0.05);
+        setPrice(250);
         setTime("3");
-        setSubtotalPrice(0.055);
+        setSubtotalPrice(275);
 
         const expiryDate365 = new Date(currentDate);
         expiryDate365.setDate(currentDate.getDate() + 365); // Adding 90 days
         setExpiryDate(formatDate(expiryDate365)); // Format as DD/MM/YYYY
         break;
       case "730 day":
-        setPrice(0.1);
+        setPrice(500);
         setTime("4");
-        setSubtotalPrice(0.105);
+        setSubtotalPrice(525);
 
         const expiryDate730 = new Date(currentDate);
         expiryDate730.setDate(currentDate.getDate() + 730); // Adding 90 days
