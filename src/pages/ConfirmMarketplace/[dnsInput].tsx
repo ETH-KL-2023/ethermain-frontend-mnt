@@ -191,7 +191,7 @@ function ConfirmMarketplace() {
           <div className="flex mt-2">
             <h1 className="text-lg text-left font-semibold">Current Owner:</h1>
             <text className="ml-2 text-lg text-left font-semibold">
-              0xui7awjk89awd
+            0x5073c3929c9BdECd87Cc63068Fd3185F0b6f22A5
             </text>
           </div>
           <div className="flex mt-2">
