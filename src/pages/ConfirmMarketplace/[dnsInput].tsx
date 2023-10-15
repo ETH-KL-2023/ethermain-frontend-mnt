@@ -25,7 +25,7 @@ function ConfirmMarketplace() {
 
   async function checkiftokenListed(tokenId: number) {
     const { data, error } = await supabase
-      .from("tokenTable")
+      .from("tokenMantle")
       .select("*")
       .contains("listed_id", [tokenId]);
     if (error) {
@@ -42,7 +42,7 @@ function ConfirmMarketplace() {
 
   async function addressExists(address: string): Promise<boolean> {
     const { data, error } = await supabase
-      .from("tokenTable")
+      .from("tokenMantle")
       .select("Address")
       .eq("Address", address);
 
@@ -56,7 +56,7 @@ function ConfirmMarketplace() {
 
   async function removeFromListedId(tokenId: number) {
     const { data, error } = await supabase
-      .from("tokenTable")
+      .from("tokenMantle")
       .select("*")
       .contains("listed_id", [tokenId]);
 
@@ -73,7 +73,7 @@ function ConfirmMarketplace() {
         (id: number) => id !== tokenId
       );
       const { error: updateError } = await supabase
-        .from("tokenTable")
+        .from("tokenMantle")
         .update({ listed_id: updatedListedIds })
         .eq("id", row.id);
 
@@ -96,7 +96,7 @@ function ConfirmMarketplace() {
 
     if (!exists) {
       // Insert a new row with the address and tokenId.
-      const { error } = await supabase.from("tokenTable").insert({
+      const { error } = await supabase.from("tokenMantle").insert({
         Address: address,
         token_id: [tokenId],
       });
@@ -107,7 +107,7 @@ function ConfirmMarketplace() {
     } else {
       // Append the tokenId to the token_id array of the existing address.
       const { data, error } = await supabase
-        .from("tokenTable")
+        .from("tokenMantle")
         .select("*")
         .eq("Address", address);
 
@@ -122,7 +122,7 @@ function ConfirmMarketplace() {
       );
 
       const { error: updateError } = await supabase
-        .from("tokenTable")
+        .from("tokenMantle")
         .update({ token_id: updatedTokenIds })
         .eq("Address", address);
 

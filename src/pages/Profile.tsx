@@ -37,7 +37,7 @@ export default function Profile() {
   async function fetchAndSetTokenIdsByAddress(address: string) {
     try {
       const { data, error } = await supabase
-        .from("tokenTable")
+        .from("tokenMantle")
         .select("token_id")
         .eq("Address", address)
         .single();
@@ -63,7 +63,7 @@ export default function Profile() {
   async function fetchAndSetListedIdsByAddress(address: string) {
     try {
       const { data, error } = await supabase
-        .from("tokenTable")
+        .from("tokenMantle")
         .select("listed_id")
         .eq("Address", address)
         .single();
@@ -253,7 +253,7 @@ const supabase = getSupabase();
 async function moveTokenToListed(tokenId: number) {
   // Step 1: Find rows that have the token id in the token_id array
   const { data, error } = await supabase
-    .from("tokenTable")
+    .from("tokenMantle")
     .select("*")
     .contains("token_id", [tokenId]);
 
@@ -282,7 +282,7 @@ async function moveTokenToListed(tokenId: number) {
 
     // Update the row in the database
     const { error: updateError } = await supabase
-      .from("tokenTable")
+      .from("tokenMantle")
       .update({
         token_id: updatedTokenIds,
         listed_id: updatedListedIds,
@@ -382,7 +382,7 @@ function ListedData({ tokenId }: any) {
 async function moveTokenToTokenId(tokenId: number) {
   // Step 1: Find rows that have the token id in the listed_id array
   const { data, error } = await supabase
-    .from("tokenTable")
+    .from("tokenMantle")
     .select("*")
     .contains("listed_id", [tokenId]);
 
@@ -411,7 +411,7 @@ async function moveTokenToTokenId(tokenId: number) {
 
     // Update the row in the database
     const { error: updateError } = await supabase
-      .from("tokenTable")
+      .from("tokenMantle")
       .update({
         token_id: updatedTokenIds,
         listed_id: updatedListedIds,

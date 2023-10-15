@@ -236,13 +236,13 @@ const supabase = getSupabase();
 async function handleWallet(wallet: any, newTokenId: any) {
   // First, check if the address exists in the table
   const { data, error } = await supabase
-    .from("tokenTable")
+    .from("tokenMantle")
     .select("token_id")
     .eq("Address", wallet);
 
   // If the address does not exist, insert a new row
   if (!data || data.length === 0) {
-    const { error: insertError } = await supabase.from("tokenTable").insert([
+    const { error: insertError } = await supabase.from("tokenMantle").insert([
       {
         Address: wallet,
         token_id: [newTokenId],
@@ -258,7 +258,7 @@ async function handleWallet(wallet: any, newTokenId: any) {
     const updatedTokenIds = [...currentTokenIds, newTokenId];
 
     const { error: updateError } = await supabase
-      .from("tokenTable")
+      .from("tokenMantle")
       .update({ token_id: updatedTokenIds })
       .eq("Address", wallet);
 
